@@ -9,6 +9,40 @@
   <name>Alma Rest interface</name>
   <description>Rest interface to ExLibris Alma.</description>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <camel-version>2.17.3</camel-version>
+    <slf4j-version>1.7.12</slf4j-version>
+  </properties>
+
+  <dependencies>
+    <!-- logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j-version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-rs-client</artifactId>
+      <version>3.1.7</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -25,6 +59,7 @@
         <configuration>
           <generatePackage>com.exlibrisgroup.alma</generatePackage>
           <schemaDirectory>src/main/resources/schemas</schemaDirectory>
+          <bindingFiles>**/*.xjb</bindingFiles>
         </configuration>
       </plugin>
     </plugins>
