@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>se.kth.infosys.smx.alma</groupId>
+  <artifactId>alma</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>KTH ALMA integration</name>
+  <description>Project for components making up the ExLibris ALMA integration.</description>
+  <organization>
+    <name>KTH</name>
+    <url>https://www.kth.se</url>
+  </organization>
+  <scm>
+    <url>https://gita.sys.kth.se/Infosys/camel-alma</url>
+    <developerConnection>fjo@kth.se</developerConnection>
+    <connection>https://gita.sys.kth.se/Infosys/camel-alma</connection>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://gita.sys.kth.se/Infosys/camel/alma/issues</url>
+  </issueManagement>
+  <modules>
+    <module>alma-rest</module>
+    <module>alma-component</module>
+  </modules>
+</project>
