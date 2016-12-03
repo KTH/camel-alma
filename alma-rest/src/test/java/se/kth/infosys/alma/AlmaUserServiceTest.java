@@ -36,9 +36,9 @@ import org.junit.Test;
 import com.exlibrisgroup.alma.User;
 import com.exlibrisgroup.alma.WebServiceResult;
 
-public class AlmaServiceTest {
-    private static final Logger logger = Logger.getLogger(AlmaServiceTest.class);
-    private AlmaService alma;
+public class AlmaUserServiceTest {
+    private static final Logger logger = Logger.getLogger(AlmaUserServiceTest.class);
+    private AlmaUserService alma;
     private Properties properties = new Properties();
 
     @Before
@@ -47,7 +47,7 @@ public class AlmaServiceTest {
 
         String host = properties.getProperty("alma.host");
         String apiKey = properties.getProperty("alma.apikey");
-        alma = new AlmaService(host, apiKey);
+        alma = new AlmaUserService(host, apiKey);
     }
 
     @Test
@@ -58,6 +58,20 @@ public class AlmaServiceTest {
         assertEquals("Jönsson", user.getLastName());
     }
 
+//    @Test
+//    public void testGetUserKthid() {
+//        try {
+//            User user = alma.getUser("u1fjolle");
+//            assertEquals("fjo@kth.se", user.getPrimaryId());
+//            assertEquals("Fredrik", user.getFirstName());
+//            assertEquals("Jönsson", user.getLastName());
+//        } catch (BadRequestException e) {
+//            WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
+//            logger.error(res.getErrorList().getErrors().get(0).getErrorMessage());
+//            assert(false);
+//        }
+//     }
+
     @Test
     public void testGetNotExistingUser() {
         try {
@@ -66,7 +80,7 @@ public class AlmaServiceTest {
         } catch (BadRequestException e) {
             assertEquals(400, e.getResponse().getStatus());
             WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
-            assertEquals(AlmaService.USER_NOT_FOUND,
+            assertEquals(AlmaUserService.USER_NOT_FOUND,
                     res.getErrorList().getErrors().get(0).getErrorCode());
         }
     }
