@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 import com.exlibrisgroup.alma.User;
 
 /**
- * Abstract base class for ExLibris ALMA REST services.
+ * The Alma service endpoint for users.
  */
 public class AlmaUserService extends AlmaService {
     public static final String FAILED_TO_DELETE_USER = "401850";
@@ -47,7 +47,7 @@ public class AlmaUserService extends AlmaService {
      */
     public AlmaUserService(String host, String apiKey) throws Exception {
         super(apiKey);
-        this.alma = client.target(String.format("https://%s/almaws/v1", host));
+        this.alma = client.target(String.format("https://%s/almaws/v1/users", host));
     }
 
     /**
@@ -56,7 +56,7 @@ public class AlmaUserService extends AlmaService {
      * @return The user as found in Alma
      */
     public User getUser(final String userId) {
-        return alma.path("/users/{user_id}")
+        return alma.path("/{user_id}")
                 .resolveTemplate("user_id", userId)
                 .queryParam("apikey", apiKey)
                 .request()
@@ -69,7 +69,7 @@ public class AlmaUserService extends AlmaService {
      * @return the user as updated in ALMA.
      */
     public User updateUser(final User user) {
-        return alma.path("/users/{user_id}")
+        return alma.path("/{user_id}")
                 .resolveTemplate("user_id", user.getPrimaryId())
                 .queryParam("apikey", apiKey)
                 .request()
@@ -82,7 +82,7 @@ public class AlmaUserService extends AlmaService {
      * @return the user as created in ALMA.
      */
     public User createUser(final User user) {
-        return alma.path("/users")
+        return alma.path("")
                 .queryParam("apikey", apiKey)
                 .request()
                 .post(Entity.entity(user, MediaType.APPLICATION_XML), User.class);
@@ -93,7 +93,7 @@ public class AlmaUserService extends AlmaService {
      * @param userId the user identifier
      */
     public void deleteUser(final String userId) {
-        alma.path("/users")
+        alma.path("")
             .resolveTemplate("user_id", userId)
             .queryParam("apikey", apiKey)
             .request()
