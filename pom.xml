@@ -54,6 +54,7 @@
   <modules>
     <module>alma-rest</module>
     <module>alma-component</module>
+    <module>alma-feature</module>
   </modules>
   
   <build>

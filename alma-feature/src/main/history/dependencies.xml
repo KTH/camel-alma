@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.1" name="karaf-ug-1.0-SNAPSHOT">
+    <feature>
+        <bundle>mvn:se.kth.infosys.osgi/ugclient/20140528.91</bundle>
+        <bundle>mvn:se.kth.infosys/camel-ug/1.0-SNAPSHOT</bundle>
+    </feature>
+</features>
