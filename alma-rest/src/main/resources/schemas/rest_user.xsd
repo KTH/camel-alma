@@ -3,12 +3,14 @@
 
 	<xs:annotation>
 		<xs:documentation>There are two basic types of user accounts in Alma: [Internal users and External users|https://developers.exlibrisgroup.com/blog/Users-API-working-with-external-internal-users].
-			Internal users are users that exist only in Alma. They are created manually by library staff and are managed entirely within the library's scope:
-			Authentication, updates, and user-related queries are performed using the Alma internal database.
+			Internal users are users that exist only in Alma. They are created manually by library staff and are managed entirely within the library's scope.
 			External users are users that are stored and managed outside the library's scope, usually in another system maintained by the institution (for example, in a Student Information System).
 			These users' information is loaded into Alma and is synchronized on a regular basis.
-			Authentication of external users is performed outside of Alma, for example in LDAP.
-            See [here|https://developers.exlibrisgroup.com/alma/integrations/user-management] for more details.
+			See [User Types|https://developers.exlibrisgroup.com/alma/integrations/user-management] for more details.
+
+			This XSD describes the user object that is used in [SIS load (version 2)|https://developers.exlibrisgroup.com/alma/integrations/user-management/sis], and in the [Users API|https://developers.exlibrisgroup.com/alma/apis/users].
+			SIS load takes only external information into account: Internal users are not updated at all, and Internal segments that are related to an external user are not updated at all.
+			User API behavior is different: It does update internal user's information and updates internal segments that are related to an external user as well.
 		</xs:documentation>
 	</xs:annotation>
 
@@ -91,8 +93,9 @@
 						<xs:tags>api sis post put</xs:tags>
 					</xs:appinfo>
 					<xs:documentation>A four-digit number which serves as a password for the user to log on to the selfcheck machine (SIP2).
-					On SIS synch and for external users in PUT action, this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless override parameter is sent with the field's name.
-					If the input payload for the PUT action contains this field empty, and there is an existing pin_number, the existing value will be kept and will not be removed.
+					On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+					For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
+See [blog|https://developers.exlibrisgroup.com/blog/External-user-data-behavior-of-SIS-synchronization-and-API] for more details.
 					</xs:documentation>
 				</xs:annotation>
 			</xs:element>
@@ -103,6 +106,9 @@
 					</xs:appinfo>
 					<xs:documentation>The user's title
 					Possible codes are listed in the 'UserTitles' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+					For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
+See [blog|https://developers.exlibrisgroup.com/blog/External-user-data-behavior-of-SIS-synchronization-and-API] for more details.
 					</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
@@ -121,7 +127,9 @@
 					</xs:appinfo>
 					<xs:documentation>The types of jobs the user performs in the library, such as Cataloger, Circulation Desk Operator, and so forth.
 					Possible values are listed in 'Job Titles' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
-					On SIS synch and for external users in PUT action, this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless override parameter is sent with the field's name.
+					On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+					For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
+See [blog|https://developers.exlibrisgroup.com/blog/External-user-data-behavior-of-SIS-synchronization-and-API] for more details.
 					</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
@@ -169,7 +177,9 @@
 					<xs:documentation>The group within the institution to which the user belongs.
 					Possible codes are listed in 'User Groups' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
 					Rules for user group usage are define in 'UserRecordTypeUserGroup' mapping table.
-					On SIS synch and for external users in PUT action, this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless override parameter is sent with the field's name.
+					On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+					For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
+See [blog|https://developers.exlibrisgroup.com/blog/External-user-data-behavior-of-SIS-synchronization-and-API] for more details.
 					</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
@@ -188,7 +198,9 @@
 					</xs:appinfo>
 					<xs:documentation>The code of the campus related to the user.
 						Possible codes are listed in the "Campus List" of the general configuration menu.
-						On SIS synch and for external users in PUT action, this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless override parameter is sent with the field's name.
+						On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+						For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
+See [blog|https://developers.exlibrisgroup.com/blog/External-user-data-behavior-of-SIS-synchronization-and-API] for more details.
 					</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
@@ -235,7 +247,9 @@
 					<xs:documentation>The user's preferred language.
 					Possible codes are listed in 'User Preferred Language' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
 					Default is the institution language.
-					On SIS synch and for external users in PUT action, this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless override parameter is sent with the field's name.
+					On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+					For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
+See [blog|https://developers.exlibrisgroup.com/blog/External-user-data-behavior-of-SIS-synchronization-and-API] for more details.
 					</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
@@ -310,8 +324,7 @@
 						<xs:tags>api post put</xs:tags>
 					</xs:appinfo>
 					<xs:documentation>user's password. Relevant for internal users only.
-					In POST action it is mandatory for internal users. Due to security issues, it is returned empty in the GET action.
-					Note that in the PUT action password can be updated, but if left empty - the existing password will be kept.
+					Due to security issues, it is returned empty in the GET action. Note that in the PUT action password can be updated, but if left empty - the existing password will be kept.
 					</xs:documentation>
 				</xs:annotation>
 			</xs:element>
@@ -425,7 +438,7 @@
 					If list of roles was not supplied in the POST action, the user will be created with roles according to the role assignment rules
 					(General > User Management Configuration > Configuration Menu > Roles and Registration > Role Assignment Rules).
 					PUT action: If list of roles is supplied, it will replace the existing roles.
-					If list of roles was not supplied in the PUT action, the existing roles will be kept.
+					If list of roles was not supplied in the PUT action, the existing roles will be kept (note that the roles behavior is different than the other segments: all user segments are deleted if the incoming list is empty. Only roles are kept in such case).
 					</xs:documentation>
 				</xs:annotation>
 			</xs:element>
@@ -473,6 +486,22 @@
 						<xs:tags>api sis get post put</xs:tags>
 					</xs:appinfo>
 					<xs:documentation>List of the user's related resource sharing libraries.
+					On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+					For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
+See [blog|https://developers.exlibrisgroup.com/blog/External-user-data-behavior-of-SIS-synchronization-and-API] for more details.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="library_notices" type="library_notices"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api sis get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of the user's library notices.
+					On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+					For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
+See [blog|https://developers.exlibrisgroup.com/blog/External-user-data-behavior-of-SIS-synchronization-and-API] for more details.
 					</xs:documentation>
 				</xs:annotation>
 			</xs:element>
@@ -491,7 +520,7 @@
 					If list of roles was not supplied in the POST action, the user will be created with roles according to the role assignment rules
 					(General > User Management Configuration > Configuration Menu > Roles and Registration > Role Assignment Rules).
 					PUT action: If list of roles is supplied- it will replace the existing roles.
-					If list of roles was not supplied in the PUT action, the existing roles will be kept.
+					If list of roles was not supplied in the PUT action, the existing roles will be kept (note that the roles behavior is different than the other segments: all user segments are deleted if the incoming list is empty. Only roles are kept in such case).
 </xs:documentation>
 </xs:annotation>
 <xs:sequence>
@@ -753,7 +782,7 @@
 		<xs:element name="user_viewable" type="xs:boolean"
 				minOccurs="1" maxOccurs="1">
 			<xs:annotation>
-				<xs:documentation>Indication whether the user is enabled to view the note.
+				<xs:documentation>Indication whether the user is able to view the note.
 					Default is false.</xs:documentation>
 			</xs:annotation>
 		</xs:element>
@@ -1294,7 +1323,8 @@
 <xs:complexType name="rs_libraries">
 	<xs:annotation>
 		<xs:documentation>List of the user's related resource sharing libraries.
-		On SIS synch and for external users in PUT action, this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless override parameter is sent with the field's name.
+		On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+		For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
 		</xs:documentation>
 	</xs:annotation>
 	<xs:sequence>
@@ -1329,6 +1359,49 @@
 				</xs:simpleContent>
 			</xs:complexType>
 		</xs:element>
+	</xs:all>
+</xs:complexType>
+
+<xs:complexType name="library_notices">
+	<xs:annotation>
+		<xs:documentation>List of the user's library notices.
+		On SIS synch this field will not be replaced if it was updated manually (or if empty in the incoming user record).
+		For external users in PUT action: this field will not be replaced if it was updated manually (or if empty in the incoming user record), unless 'override' parameter is sent with the field's name.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:sequence>
+		<xs:element name="library_notice" type="library_notice"
+				minOccurs="0" maxOccurs="unbounded">
+			<xs:annotation>
+				<xs:documentation>Specific user's library notice.</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+	</xs:sequence>
+</xs:complexType>
+<xs:complexType name="library_notice">
+	<xs:annotation>
+		<xs:documentation>Specific user's library notice.</xs:documentation>
+	</xs:annotation>
+	<xs:all>
+		<xs:element name="code"  minOccurs="0"
+				maxOccurs="1">
+			<xs:annotation>
+				<xs:appinfo>
+					<xs:codeTable>LibraryNoticesOptInDisplay</xs:codeTable>
+				</xs:appinfo>
+				<xs:documentation>The code of the library notice.
+						Possible codes are listed in 'Library Notices Opt In Display' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+				</xs:documentation>
+			</xs:annotation>
+			<xs:complexType>
+				<xs:simpleContent>
+					<xs:extension base="string255Length">
+						<xs:attribute name="desc" type="string255Length" use="optional" />
+					</xs:extension>
+				</xs:simpleContent>
+			</xs:complexType>
+		</xs:element>
+		<xs:element name="value" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
 	</xs:all>
 </xs:complexType>
 
