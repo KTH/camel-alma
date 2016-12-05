@@ -26,7 +26,7 @@
 
     <feature>camel-core</feature>
 
-    <bundle start-level='80'>mvn:se.kth.infosys.smx/alma-rest/${project.version}</bundle>
-    <bundle start-level='80'>mvn:se.kth.infosys.smx/alma-component/${project.version}</bundle>
+    <bundle start-level='80'>mvn:se.kth.infosys.smx.alma/alma-rest/${project.version}</bundle>
+    <bundle start-level='80'>mvn:se.kth.infosys.smx.alma/alma-component/${project.version}</bundle>
   </feature>
 </features>

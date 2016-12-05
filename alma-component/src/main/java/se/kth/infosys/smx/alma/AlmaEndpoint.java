@@ -63,6 +63,7 @@ public class AlmaEndpoint extends DefaultEndpoint {
 
     /**
      * Some description of this option, and what it does
+     * @param name Some name.
      */
     public void setName(String name) {
         this.name = name;
@@ -74,6 +75,7 @@ public class AlmaEndpoint extends DefaultEndpoint {
 
     /**
      * Some description of this option, and what it does
+     * @param option Some option.
      */
     public void setOption(int option) {
         this.option = option;

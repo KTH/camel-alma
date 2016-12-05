@@ -31,7 +31,7 @@ import org.apache.camel.Endpoint;
 import org.apache.camel.impl.UriEndpointComponent;
 
 /**
- * Represents the component that manages {@link Alma ComponentEndpoint}.
+ * Represents the component that manages {@link AlmaEndpoint}.
  */
 public class AlmaComponent extends UriEndpointComponent {
     
