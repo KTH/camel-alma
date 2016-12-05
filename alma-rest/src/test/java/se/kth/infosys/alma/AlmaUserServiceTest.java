@@ -33,8 +33,8 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.exlibrisgroup.alma.User;
-import com.exlibrisgroup.alma.WebServiceResult;
+import se.kth.infosys.smx.alma.model.User;
+import se.kth.infosys.smx.alma.model.WebServiceResult;
 
 public class AlmaUserServiceTest {
     private static final Logger logger = Logger.getLogger(AlmaUserServiceTest.class);
@@ -67,7 +67,7 @@ public class AlmaUserServiceTest {
 //            assertEquals("Jönsson", user.getLastName());
 //        } catch (BadRequestException e) {
 //            WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
-//            logger.error(res.getErrorList().getErrors().get(0).getErrorMessage());
+//            logger.error(res.getErrorList().getError().get(0).getErrorMessage());
 //            assert(false);
 //        }
 //     }

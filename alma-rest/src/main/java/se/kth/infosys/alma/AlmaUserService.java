@@ -27,7 +27,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
-import com.exlibrisgroup.alma.User;
+import se.kth.infosys.smx.alma.model.User;
 
 /**
  * The Alma service endpoint for users.
