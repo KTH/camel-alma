@@ -29,18 +29,20 @@ import org.apache.camel.Producer;
 import org.apache.camel.impl.DefaultEndpoint;
 import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.UriEndpoint;
-import org.apache.camel.spi.UriParam;
 import org.apache.camel.spi.UriPath;
 
 /**
  * Represents a Alma Component endpoint.
  */
-@UriEndpoint(scheme = "alma", title = "Alma Component", syntax="alma:name", consumerClass = AlmaConsumer.class, label = "Alma Component")
+@UriEndpoint(scheme = "alma", title = "Alma Component", syntax="alma://apikey@environment[/api][/operation]", consumerClass = AlmaConsumer.class, label = "Alma Component")
 public class AlmaEndpoint extends DefaultEndpoint {
     @UriPath @Metadata(required = "true")
-    private String name;
-    @UriParam(defaultValue = "10")
-    private int option = 10;
+    private String host;
+    @UriPath @Metadata(required = "true")
+    private String apiKey;
+
+    private String api;
+    private String operation;
 
     public AlmaEndpoint() {
     }
@@ -49,39 +51,87 @@ public class AlmaEndpoint extends DefaultEndpoint {
         super(uri, component);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Producer createProducer() throws Exception {
         return new AlmaProducer(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Consumer createConsumer(Processor processor) throws Exception {
         return new AlmaConsumer(this, processor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSingleton() {
         return true;
     }
 
     /**
-     * Some description of this option, and what it does
-     * @param name Some name.
+     * Set environment for ExLibris ALMA api calls, e.g. api-eu.hosted.exlibrisgroup.com
+     * @param host the FQDN for the environment.
      */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+    public void setHost(String host) {
+        this.host = host;
     }
 
     /**
-     * Some description of this option, and what it does
-     * @param option Some option.
+     * @return the ExLibris ALMA environment.
      */
-    public void setOption(int option) {
-        this.option = option;
+    public String getHost() {
+        return this.host;
     }
 
-    public int getOption() {
-        return option;
+    /**
+     * Set the API to use for authentication with ExLibris ALMA.
+     * @param apiKey the API key.
+     */
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    /**
+     * @return the API key for the ExLibris ALMA environment.
+     */
+    public String getApiKey() {
+        return this.apiKey;
+    }
+
+    /**
+     * Set the api to use with this endpoint.
+     * @param api the ALMA api to use.
+     */
+    public void setApi(String api) {
+        this.api = api;
+    }
+
+    /**
+     * Get the api to use with this endpoint.
+     * @return the api.
+     */
+    public String getApi() {
+        return this.api;
+    }
+
+    /**
+     * Set the API operation to use for this endpoint.
+     * @param operation the ALMA api operation to use.
+     */
+    public void setOperation(String operation) {
+        this.operation = operation;
+        
+    }
+
+    /**
+     * Get the operation to use with this endpoint.
+     * @return the operation.
+     */
+    public String getOperation() {
+        return this.operation;
     }
 }

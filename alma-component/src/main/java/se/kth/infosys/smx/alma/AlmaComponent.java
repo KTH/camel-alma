@@ -23,18 +23,21 @@
  */
 package se.kth.infosys.smx.alma;
 
+import java.net.URI;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
-
 import org.apache.camel.impl.UriEndpointComponent;
 
 /**
  * Represents the component that manages {@link AlmaEndpoint}.
  */
 public class AlmaComponent extends UriEndpointComponent {
-    
+    private static Pattern PATH_PATTERN = Pattern.compile("(/(?<api>users))+(/(?<operation>create|read|update|delete|createOrUpdate))+");
+
     public AlmaComponent() {
         super(AlmaEndpoint.class);
     }
@@ -43,9 +46,22 @@ public class AlmaComponent extends UriEndpointComponent {
         super(context, AlmaEndpoint.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception {
-        Endpoint endpoint = new AlmaEndpoint(uri, this);
+        AlmaEndpoint endpoint = new AlmaEndpoint(uri, this);
         setProperties(endpoint, parameters);
+
+        URI formattedUri = new URI(uri);
+        endpoint.setHost(formattedUri.getHost());
+        endpoint.setApiKey(formattedUri.getUserInfo());
+
+        Matcher matcher = PATH_PATTERN.matcher(formattedUri.getPath());
+        if (matcher.matches()) {
+            endpoint.setApi(matcher.group("api"));
+            endpoint.setOperation(matcher.group("operation"));
+        }
         return endpoint;
     }
 }

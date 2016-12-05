@@ -25,23 +25,69 @@ package se.kth.infosys.smx.alma;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultProducer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.camel.util.ExchangeHelper;
+
+import se.kth.infosys.smx.alma.internal.AlmaMessage;
+import se.kth.infosys.smx.alma.internal.UserServiceWrapper;
 
 /**
  * The Alma Component producer.
  */
 public class AlmaProducer extends DefaultProducer {
-    private static final Logger LOG = LoggerFactory.getLogger(AlmaProducer.class);
-    private AlmaEndpoint endpoint;
+    private final UserServiceWrapper userService;
+    private final AlmaEndpoint endpoint;
 
-    public AlmaProducer(AlmaEndpoint endpoint) {
+    public AlmaProducer(AlmaEndpoint endpoint) throws Exception {
         super(endpoint);
         this.endpoint = endpoint;
+        this.userService = new UserServiceWrapper(endpoint.getHost(), endpoint.getApiKey());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void process(Exchange exchange) throws Exception {
-        System.out.println(exchange.getIn().getBody());    
+        final String api;
+
+        if (endpoint.getApi() != null) {
+            api = endpoint.getApi();
+        } else {
+            api = ExchangeHelper.getMandatoryHeader(exchange, AlmaMessage.Header.Api, String.class);
+        }
+
+        switch (api) {
+        case AlmaMessage.Api.Users:
+            processUsersRequest(exchange);
+            break;
+        default:
+            throw new UnsupportedOperationException("Api: " + api + " not supported");
+        }
     }
 
+    private void processUsersRequest(Exchange exchange) throws Exception {
+        final String operation;
+
+        if (endpoint.getOperation() != null) {
+            operation = endpoint.getOperation();
+        } else {
+            operation = ExchangeHelper.getMandatoryHeader(exchange, AlmaMessage.Header.Operation, String.class);
+        }
+
+        switch (operation) {
+        case AlmaMessage.Operation.Read:
+            userService.getUser(exchange);
+            break;
+        case AlmaMessage.Operation.Create:
+            userService.createUser(exchange);
+            break;
+        case AlmaMessage.Operation.Update:
+            userService.updateUser(exchange);
+            break;
+        case AlmaMessage.Operation.CreateOrUpdate:
+            userService.createOrUpdateUser(exchange);
+            break;
+        default:
+            throw new UnsupportedOperationException("Operation: " + operation + " not supported");
+        }
+    }
 }

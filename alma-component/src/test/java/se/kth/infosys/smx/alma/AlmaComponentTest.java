@@ -25,16 +25,15 @@ package se.kth.infosys.smx.alma;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.apache.camel.component.properties.PropertiesComponent;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Test;
 
 public class AlmaComponentTest extends CamelTestSupport {
-
     @Test
     public void testAlmaComponent() throws Exception {
         MockEndpoint mock = getMockEndpoint("mock:result");
-        mock.expectedMinimumMessageCount(1);       
-        
+        mock.expectedMinimumMessageCount(1);
         assertMockEndpointsSatisfied();
     }
 
@@ -42,8 +41,15 @@ public class AlmaComponentTest extends CamelTestSupport {
     protected RouteBuilder createRouteBuilder() throws Exception {
         return new RouteBuilder() {
             public void configure() {
-                from("alma://foo")
-                  .to("alma://bar")
+                PropertiesComponent pc = (PropertiesComponent) context.getComponent("properties");
+                pc.setLocation("classpath:test.properties");
+
+                from("timer:once?repeatCount=1")
+                  .setHeader("almaUserId")
+                  .simple("fjo@kth.se")
+                  .to("alma://{{alma.apikey}}@{{alma.host}}/users/read")
+                  .marshal().jacksonxml()
+                  .to("log:info?showAll=true")
                   .to("mock:result");
             }
         };
