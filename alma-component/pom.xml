@@ -135,7 +135,11 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Bundle-SymbolicName>se.kth.infosys.smx.alma-component</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+<!--             <Embed-Dependency>httpcore,httpclient,ugclient,commons-logging,json</Embed-Dependency> -->
+<!--             <Embed-Transitive>true</Embed-Transitive> -->
+<!--             <Import-Package>!org.apache.log,*</Import-Package> -->
+            <Export-Package>se.kth.infosys.smx.alma.model</Export-Package>
             <Export-Service>org.apache.camel.spi.ComponentResolver;component=alma</Export-Service>
           </instructions>
         </configuration>

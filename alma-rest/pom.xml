@@ -29,6 +29,7 @@
     <artifactId>alma</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+  <packaging>bundle</packaging>
   <artifactId>alma-rest</artifactId>
   <name>Alma Rest interface</name>
   <description>Rest interface to ExLibris Alma.</description>
@@ -81,9 +82,25 @@
           </execution>
         </executions>
         <configuration>
-          <generatePackage>com.exlibrisgroup.alma</generatePackage>
+          <generatePackage>se.kth.infosys.smx.alma.model</generatePackage>
           <schemaDirectory>src/main/resources/schemas</schemaDirectory>
           <bindingFiles>**/*.xjb</bindingFiles>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>3.0.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+<!--             <Embed-Dependency>httpcore,httpclient,ugclient,commons-logging,json</Embed-Dependency> -->
+            <Embed-Transitive>true</Embed-Transitive>
+<!--             <Import-Package>!org.apache.log,*</Import-Package> -->
+            <Export-Package>se.kth.infosys.smx.alma.model</Export-Package>
+            <Export-Service>org.apache.camel.spi.ComponentResolver;component=ug</Export-Service>
+          </instructions>
         </configuration>
       </plugin>
     </plugins>
