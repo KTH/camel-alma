@@ -40,8 +40,8 @@ public class AlmaUserService extends AlmaService {
     private final WebTarget alma;
 
     /**
-     * Initialize the service client.
-     * @param host The targeted environment.
+     * Initialize the Web Service target.
+     * @param host The targeted ExLibris environment.
      * @param apiKey The ExLibris ALMA API key.
      * @throws Exception on SSL errors 
      */
