@@ -17,6 +17,9 @@ with the REST API. It is based on JAX RS and uses JAXB to generate a Java
 model from the XSDs provided by ExLibris for the API interface. The library
 is packaged as an OSGi bundle.
 
+The model is used to consistently marshal/unmarshal Alma objects to/from
+XML and JSON with libraries such as Jackson.
+
 ### alma-component Camel component
 
 Exposes the functionality of the REST interface as a Camel component to 
