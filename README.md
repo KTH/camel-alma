@@ -23,7 +23,7 @@ XML and JSON with libraries such as Jackson.
 ### alma-component Camel component
 
 Exposes the functionality of the REST interface as a Camel component to 
-use in Camel routes. See the [alma-component/README.md](README.md).
+use in Camel routes. See the [./alma-component/README.md](README.md).
 
 ### alma-feature Karaf feature
 
