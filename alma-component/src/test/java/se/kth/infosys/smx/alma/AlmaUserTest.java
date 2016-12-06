@@ -56,7 +56,7 @@ public class AlmaUserTest extends CamelTestSupport {
         user = mock3.getExchanges().get(0).getIn().getBody(User.class);
         assertEquals("Fredrik", user.getFirstName());
         assertEquals("Jönsson", user.getLastName());
-}
+    }
 
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {

@@ -52,7 +52,7 @@ public class UserServiceWrapper {
     }
 
     /**
-     * Get result from {@link AlmaUserService.updateUser} and store in exchange.
+     * Get result from AlmaUserService.updateUser() and store in exchange.
      * @param exchange the Camel exchange.
      * @throws Exception on errors.
      */
@@ -88,7 +88,7 @@ public class UserServiceWrapper {
     }
 
     /**
-     * Get result from {@link AlmaUserService.createUser} and store in exchange.
+     * Get result from AlmaUserService.createUser() and store in exchange.
      * @param exchange the Camel exchange.
      * @throws Exception on errors.
      */
@@ -100,7 +100,7 @@ public class UserServiceWrapper {
     }
 
     /**
-     * Get result from {@link AlmaUserService.getUser} and store in exchange.
+     * Get result from AlmaUserService.getUser() and store in exchange.
      * @param exchange the Camel exchange.
      * @throws Exception on errors.
      */
@@ -112,7 +112,7 @@ public class UserServiceWrapper {
     }
 
     /**
-     * Get result from {@link AlmaUserService.getUser} and store in exchange.
+     * Run AlmaUserService.deleteUser(), produces no output.
      * @param exchange the Camel exchange.
      * @throws Exception on errors.
      */
