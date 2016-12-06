@@ -24,7 +24,6 @@
 package se.kth.infosys.alma;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 import se.kth.infosys.smx.alma.model.User;
@@ -37,8 +36,6 @@ public class AlmaUserService extends AlmaService {
     public static final String USER_NOT_FOUND = "401861";
     public static final String USER_WITH_ID_TYPE_NOT_FOUND = "401890";
 
-    private final WebTarget alma;
-
     /**
      * Initialize the Web Service target.
      * @param host The targeted ExLibris environment.
@@ -46,8 +43,7 @@ public class AlmaUserService extends AlmaService {
      * @throws Exception on SSL errors 
      */
     public AlmaUserService(String host, String apiKey) throws Exception {
-        super(apiKey);
-        this.alma = client.target(String.format("https://%s/almaws/v1/users", host));
+        super(String.format("https://%s/almaws/v1/users", host), apiKey);
     }
 
     /**

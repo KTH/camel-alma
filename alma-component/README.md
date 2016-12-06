@@ -53,9 +53,9 @@ any value of a corresponding header in the message is ignored.
 | Operations | Description | Body |
 |------------|-------------|------|
 | create | Create a user. | ALMA model User Java object. |
-| read | Get a user, user id must be specified with `almaUserId`. | none |
+| read | Get a user, user id must be specified with `almaUserId`. | *none* |
 | update | Update the user | ALMA model User Java object. |
-| delete | Delete a user, user id must be specified with `almaUserId`. | none |
+| delete | Delete a user, user id must be specified with `almaUserId`. | *none* |
 | createOrUpdate | Will create a user, or try to update if it already exists. | ALMA model User Java object. |
 
 ## Development
