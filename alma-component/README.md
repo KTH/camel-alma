@@ -31,14 +31,14 @@ install as a Karaf feature in e.g. Apache ServiceMix:
 alma://apikey:<your_key>@<exlibris-environment>[/<api>][/<operation>]?options
 ```
 
-Where <your_key> is the API key you get set in the ExLibris Alma portal: 
+Where `your_key` is the API key you get set in the ExLibris Alma portal: 
 https://developers.exlibrisgroup.com/alma/apis#logging
 
-The <exlibris-environment> is any of the hosted ExLibris environments:
+The `exlibris-environment` is any of the hosted ExLibris environments:
 https://developers.exlibrisgroup.com/alma/apis#calling, without the protocol part of
 the URI, e.g.: api-eu.hosted.exlibrisgroup.com
 
-<api> and <operation> are optional and can be set in message headers instead, see below.
+`api` and `operation` are optional and can be set in message headers instead, see below.
 If set, the only api currently supported is '/users'. If these are set in the URI
 any value of a corresponding header in the message is ignored.
 
