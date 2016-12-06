@@ -29,6 +29,7 @@
   <version>0.1.0</version>
   <packaging>pom</packaging>
   <name>KTH ALMA integration</name>
+  <url>https://www.kth.se/</url>
   <description>Project for components making up the ExLibris ALMA integration.</description>
   <organization>
     <name>KTH</name>
