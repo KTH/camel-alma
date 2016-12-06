@@ -29,13 +29,34 @@ import org.apache.camel.component.properties.PropertiesComponent;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Test;
 
-public class AlmaComponentTest extends CamelTestSupport {
+import se.kth.infosys.smx.alma.model.User;
+
+public class AlmaUserTest extends CamelTestSupport {
     @Test
     public void testAlmaComponent() throws Exception {
         MockEndpoint mock = getMockEndpoint("mock:result");
         mock.expectedMinimumMessageCount(1);
+
+        MockEndpoint mock2 = getMockEndpoint("mock:result2");
+        mock2.expectedMinimumMessageCount(1);
+
+        MockEndpoint mock3 = getMockEndpoint("mock:result3");
+        mock3.expectedMinimumMessageCount(1);
+
         assertMockEndpointsSatisfied();
-    }
+
+        User user = mock.getExchanges().get(0).getIn().getBody(User.class);
+        assertEquals("Fredrik", user.getFirstName());
+        assertEquals("Jönsson", user.getLastName());
+
+        user = mock2.getExchanges().get(0).getIn().getBody(User.class);
+        assertEquals("Magnus", user.getFirstName());
+        assertEquals("Jönsson", user.getLastName());
+
+        user = mock3.getExchanges().get(0).getIn().getBody(User.class);
+        assertEquals("Fredrik", user.getFirstName());
+        assertEquals("Jönsson", user.getLastName());
+}
 
     @Override
     protected RouteBuilder createRouteBuilder() throws Exception {
@@ -48,9 +69,26 @@ public class AlmaComponentTest extends CamelTestSupport {
                   .setHeader("almaUserId")
                   .simple("fjo@kth.se")
                   .to("alma://{{alma.apikey}}@{{alma.host}}/users/read")
+                  .to("mock:result")
+
                   .marshal().jacksonxml()
-                  .to("log:info?showAll=true")
-                  .to("mock:result");
+                  .setHeader("first_name")
+                  .simple("Magnus")
+                  .to("xslt:replace-firstname.xslt")
+                  .unmarshal().jacksonxml(User.class)
+                  .to("alma://{{alma.apikey}}@{{alma.host}}/users/update")
+                  .to("mock:result2")
+
+                  .marshal().jacksonxml()
+                  .setHeader("first_name")
+                  .simple("Fredrik")
+                  .to("xslt:replace-firstname.xslt")
+                  .unmarshal().jacksonxml(User.class)
+                  .to("alma://{{alma.apikey}}@{{alma.host}}/users/createOrUpdate")
+
+                  .to("mock:result3")
+                  .marshal().jacksonxml()
+                  .to("log:test");
             }
         };
     }
