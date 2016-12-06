@@ -46,8 +46,8 @@ any value of a corresponding header in the message is ignored.
 
 | Header | Description |
 |--------|-------------|
-| almaApi | Corresponds to /<api> in the URI, the only supported value is 'users' |
-| almaOperation | Corresponds to /<operation> in the URI |
+| almaApi | Corresponds to `api` in the URI, the only supported value is 'users' |
+| almaOperation | Corresponds to `operation` in the URI |
 | almaUserId | An ALMA unique user ID. We currently match against all unique ID types. Make sure they don't overlap. |
 
 | Operations | Description | Body |
