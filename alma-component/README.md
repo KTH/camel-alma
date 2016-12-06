@@ -21,7 +21,7 @@ Though not currently used by our selves, the alma-component is also available fo
 install as a Karaf feature in e.g. Apache ServiceMix:
 
 ```
-> feature:repo-add mvn:se.kth.infosys.smx/alma-feature/0.1.0/xml/features
+> feature:repo-add mvn:se.kth.infosys.smx.alma/alma-feature/0.1.0/xml/features
 > feature:install [-v] alma-feature
 ```
 
