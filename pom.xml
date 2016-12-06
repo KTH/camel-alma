@@ -42,23 +42,70 @@
     <slf4j-version>1.7.12</slf4j-version>
   </properties>
 
+  <!-- License information required by Sonatype -->
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+  
+  <!-- Source control management required by Sonatype -->
   <scm>
-    <url>https://gita.sys.kth.se/Infosys/camel-alma</url>
+    <url>https://github.com/kth/camel-alma</url>
     <developerConnection>fjo@kth.se</developerConnection>
-    <connection>https://gita.sys.kth.se/Infosys/camel-alma</connection>
+    <connection>https://github.com/kth/camel-alma</connection>
   </scm>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://gita.sys.kth.se/Infosys/camel/alma/issues</url>
+    <url>https://github.com/kth/camel-alma/issues</url>
   </issueManagement>
+
+  <!-- Developer connection information required by Sonatype -->
+  <developers>
+    <developer>
+      <name>Fredrik Jönsson</name>
+      <email>fjo@kth.se</email>
+      <organization>KTH</organization>
+      <organizationUrl>http://www.kth.se/profile/fjo</organizationUrl>
+    </developer>
+  </developers>
+
+  <!-- The actual Sonatype distribution repository -->
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+
   <modules>
     <module>alma-rest</module>
     <module>alma-component</module>
     <module>alma-feature</module>
   </modules>
-  
+
   <build>
     <plugins>
+      <!-- Signing required by Sonatype -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
