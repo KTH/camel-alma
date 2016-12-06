@@ -33,7 +33,7 @@
   </parent>
 
   <artifactId>alma-component</artifactId>
-  <packaging>jar</packaging>
+  <packaging>bundle</packaging>
 
   <name>Camel Alma Component Component</name>
   <url>http://www.kth.se</url>
