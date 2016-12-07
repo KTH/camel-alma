@@ -13,7 +13,7 @@ To include the Maven dependency in the project, use:
 <depencency>
   <groupId>se.kth.infosys.smx</groupId>
   <artifactId>alma-component</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 
