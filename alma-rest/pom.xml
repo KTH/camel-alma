@@ -27,7 +27,7 @@
   <parent>
     <groupId>se.kth.infosys.smx.alma</groupId>
     <artifactId>alma</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
   </parent>
   <packaging>bundle</packaging>
   <artifactId>alma-rest</artifactId>

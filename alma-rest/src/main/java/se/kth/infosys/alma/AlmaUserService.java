@@ -60,13 +60,27 @@ public class AlmaUserService extends AlmaService {
     }
 
     /**
-     * Update a User from ALMA. 
+     * Update a User from ALMA using the primary ID.
      * @param user the ALMA user object
      * @return the user as updated in ALMA.
      */
     public User updateUser(final User user) {
         return alma.path("/{user_id}")
                 .resolveTemplate("user_id", user.getPrimaryId())
+                .queryParam("apikey", apiKey)
+                .request()
+                .put(Entity.entity(user, MediaType.APPLICATION_XML), User.class);
+    }
+
+    /**
+     * Update a User from ALMA with specified ID.
+     * @param user the ALMA user object
+     * @param userId the user identifier
+     * @return the user as updated in ALMA.
+     */
+    public User updateUser(final User user, String userId) {
+        return alma.path("/{user_id}")
+                .resolveTemplate("user_id", userId)
                 .queryParam("apikey", apiKey)
                 .request()
                 .put(Entity.entity(user, MediaType.APPLICATION_XML), User.class);

@@ -68,7 +68,7 @@ public class AlmaUserTest extends CamelTestSupport {
                 from("timer:once?repeatCount=1")
                   .setHeader("almaUserId")
                   .simple("fjo@kth.se")
-                  .to("alma://{{alma.apikey}}@{{alma.host}}/users/read")
+                  .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/read")
                   .to("mock:result")
 
                   .marshal().jacksonxml()
@@ -76,7 +76,7 @@ public class AlmaUserTest extends CamelTestSupport {
                   .simple("Magnus")
                   .to("xslt:replace-firstname.xslt")
                   .unmarshal().jacksonxml(User.class)
-                  .to("alma://{{alma.apikey}}@{{alma.host}}/users/update")
+                  .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/update")
                   .to("mock:result2")
 
                   .marshal().jacksonxml()
@@ -84,7 +84,7 @@ public class AlmaUserTest extends CamelTestSupport {
                   .simple("Fredrik")
                   .to("xslt:replace-firstname.xslt")
                   .unmarshal().jacksonxml(User.class)
-                  .to("alma://{{alma.apikey}}@{{alma.host}}/users/createOrUpdate")
+                  .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/createOrUpdate")
 
                   .to("mock:result3")
                   .marshal().jacksonxml()

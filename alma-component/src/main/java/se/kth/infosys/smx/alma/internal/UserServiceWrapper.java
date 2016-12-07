@@ -70,16 +70,23 @@ public class UserServiceWrapper {
      */
     public void createOrUpdateUser(final Exchange exchange) throws Exception {
         User user = exchange.getIn().getMandatoryBody(User.class);
+        String userId = exchange.getIn().getHeader(AlmaMessage.Header.UserId, String.class);
+
+        if (userId == null) {
+            userId = user.getPrimaryId();
+        }
 
         try {
-            log.debug("Updating user with id {} in ALMA", user.getPrimaryId());
-            exchange.getIn().setBody(userService.updateUser(user));
+            log.debug("Updating user {} with id {} in ALMA", user, userId);
+            exchange.getIn().setBody(userService.updateUser(user, userId));
         } catch (BadRequestException e) {
             if (e.getResponse().getStatus() != 400) {
+                log.error("Failed to update user", e);
                 throw e;
             }
             WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
             if (! AlmaUserService.USER_NOT_FOUND.equals(res.getErrorList().getErrors().get(0).getErrorCode())) {
+                log.error("Failed to update user", e);
                 throw e;
             }
             log.debug("User not found, creating user with id {} in ALMA", user.getPrimaryId());

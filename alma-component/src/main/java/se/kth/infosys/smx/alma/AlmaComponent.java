@@ -55,7 +55,11 @@ public class AlmaComponent extends UriEndpointComponent {
 
         URI formattedUri = new URI(uri);
         endpoint.setHost(formattedUri.getHost());
-        endpoint.setApiKey(formattedUri.getUserInfo());
+        if (formattedUri.getUserInfo() != null) {
+            String[] auth = formattedUri.getUserInfo().split(":");
+            assert("apikey".equals(auth[0]));
+            endpoint.setApiKey(auth[1]);
+        }
 
         Matcher matcher = PATH_PATTERN.matcher(formattedUri.getPath());
         if (matcher.matches()) {
