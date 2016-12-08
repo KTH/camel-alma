@@ -27,7 +27,9 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import se.kth.infosys.smx.alma.model.ObjectFactory;
 import se.kth.infosys.smx.alma.model.User;
+import se.kth.infosys.smx.alma.model.Users;
 
 /**
  * The Alma service endpoint for users.
@@ -59,6 +61,35 @@ public class AlmaUserService extends AlmaService {
                 .request()
                 .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
                 .get(User.class);
+    }
+
+    /**
+     * Get all users from ALMA. Use with care if many users. Since
+     * requests are batched in counts of 100, you may consume your
+     * ExLibris API call quota faster than expected.
+     * 
+     * @return A list of all users found in Alma.
+     */
+    public Users getUsers() {
+        final Users users = new ObjectFactory().createUsers();
+        final int LIMIT = 100;
+
+        Users nextUsers;
+        int offset = 0;
+
+        do {
+            nextUsers = alma.path("")
+                .queryParam("apikey", apiKey)
+                .queryParam("limit", LIMIT)
+                .queryParam("offset", offset)
+                .request()
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
+                .get(Users.class);
+            users.getUser().addAll(nextUsers.getUser());
+            offset += LIMIT;
+        } while (nextUsers.getUser().size() == LIMIT);
+
+        return users;
     }
 
     /**
