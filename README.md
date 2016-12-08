@@ -20,6 +20,8 @@ is packaged as an OSGi bundle.
 The model is used to consistently marshal/unmarshal Alma objects to/from
 XML and JSON with libraries such as Jackson.
 
+See [alma-rest/README.md](alma-rest/README.md) for more information.
+
 ### alma-component Camel component
 
 Exposes the functionality of the REST interface as a Camel component to 

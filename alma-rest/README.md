@@ -26,10 +26,11 @@ For testing you need to set the ExLibris environment to use and your API key, th
 authentication method currently used, in src/test/resources/test.properties. There
 is a template file test.properties.in for your convenvience.
 
+There is also test data in test.properties that needs amendment for your environment.
+
 ### Building
 
 There is nothing to test here that is not really calls to the actual API, so unless
 you can set these properties you have to turn testing off in order to build.
 
 E.g. `mvn install -Dmaven.test.skip=true`
-
