@@ -129,6 +129,10 @@ public class UserServiceWrapper {
         String userId = ExchangeHelper.getMandatoryHeader(exchange, AlmaMessage.Header.UserId, String.class);
 
         log.debug("Getting user with id {} from ALMA", userId);
-        userService.deleteUser(userId);
+        if (userService.deleteUser(userId)) {
+            log.debug("User with id {} deleted from Alma.", userId);
+        } else {
+            log.debug("User with id {} NOT deleted from Alma, maybe not found.", userId);
+        }
     }
 }
