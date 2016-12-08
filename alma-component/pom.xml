@@ -29,7 +29,7 @@
   <parent>
     <artifactId>alma</artifactId>
     <groupId>se.kth.infosys.smx.alma</groupId>
-    <version>0.1.1</version>
+    <version>0.1.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>alma-component</artifactId>
@@ -42,6 +42,11 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
+      <version>${camel-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jaxb</artifactId>
       <version>${camel-version}</version>
     </dependency>
     <dependency>

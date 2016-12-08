@@ -24,8 +24,11 @@
 package se.kth.infosys.smx.alma;
 
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.jacksonxml.JacksonXMLDataFormat;
+import org.apache.camel.component.jacksonxml.ListJacksonXMLDataFormat;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.properties.PropertiesComponent;
+import org.apache.camel.model.dataformat.JaxbDataFormat;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Test;
 
@@ -65,30 +68,36 @@ public class AlmaUserTest extends CamelTestSupport {
                 PropertiesComponent pc = (PropertiesComponent) context.getComponent("properties");
                 pc.setLocation("classpath:test.properties");
 
+                JaxbDataFormat jaxb = new JaxbDataFormat(false);
+                jaxb.setContextPath("se.kth.infosys.smx.alma.model");
+
                 from("timer:once?repeatCount=1")
                   .setHeader("almaUserId")
                   .simple("fjo@kth.se")
                   .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/read")
+                  .to("log:test1")
                   .to("mock:result")
 
-                  .marshal().jacksonxml()
+                  .marshal(jaxb)
+                  .to("log:test2")
                   .setHeader("first_name")
                   .simple("Magnus")
                   .to("xslt:replace-firstname.xslt")
-                  .unmarshal().jacksonxml(User.class)
+                  .unmarshal(jaxb)
                   .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/update")
                   .to("mock:result2")
 
-                  .marshal().jacksonxml()
+                  .marshal(jaxb)
+                  .to("log:test3")
                   .setHeader("first_name")
                   .simple("Fredrik")
                   .to("xslt:replace-firstname.xslt")
-                  .unmarshal().jacksonxml(User.class)
+                  .unmarshal(jaxb)
                   .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/createOrUpdate")
 
                   .to("mock:result3")
-                  .marshal().jacksonxml()
-                  .to("log:test");
+                  .marshal(jaxb)
+                  .to("log:test4");
             }
         };
     }

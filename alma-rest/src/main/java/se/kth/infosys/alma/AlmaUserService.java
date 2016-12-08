@@ -56,6 +56,7 @@ public class AlmaUserService extends AlmaService {
                 .resolveTemplate("user_id", userId)
                 .queryParam("apikey", apiKey)
                 .request()
+                .accept(MediaType.APPLICATION_XML)
                 .get(User.class);
     }
 
@@ -69,6 +70,7 @@ public class AlmaUserService extends AlmaService {
                 .resolveTemplate("user_id", user.getPrimaryId())
                 .queryParam("apikey", apiKey)
                 .request()
+                .accept(MediaType.APPLICATION_XML)
                 .put(Entity.entity(user, MediaType.APPLICATION_XML), User.class);
     }
 
@@ -83,6 +85,7 @@ public class AlmaUserService extends AlmaService {
                 .resolveTemplate("user_id", userId)
                 .queryParam("apikey", apiKey)
                 .request()
+                .accept(MediaType.APPLICATION_XML)
                 .put(Entity.entity(user, MediaType.APPLICATION_XML), User.class);
     }
 
@@ -95,6 +98,7 @@ public class AlmaUserService extends AlmaService {
         return alma.path("")
                 .queryParam("apikey", apiKey)
                 .request()
+                .accept(MediaType.APPLICATION_XML)
                 .post(Entity.entity(user, MediaType.APPLICATION_XML), User.class);
     }
 

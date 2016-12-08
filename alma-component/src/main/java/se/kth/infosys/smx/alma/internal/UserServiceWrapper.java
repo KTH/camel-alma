@@ -85,7 +85,7 @@ public class UserServiceWrapper {
                 throw e;
             }
             WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
-            if (! AlmaUserService.USER_NOT_FOUND.equals(res.getErrorList().getErrors().get(0).getErrorCode())) {
+            if (! AlmaUserService.USER_NOT_FOUND.equals(res.getErrorList().getError().get(0).getErrorCode())) {
                 log.error("Failed to update user", e);
                 throw e;
             }

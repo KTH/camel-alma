@@ -81,7 +81,7 @@ public class AlmaUserServiceTest {
             assertEquals(400, e.getResponse().getStatus());
             WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
             assertEquals(AlmaUserService.USER_NOT_FOUND,
-                    res.getErrorList().getErrors().get(0).getErrorCode());
+                    res.getErrorList().getError().get(0).getErrorCode());
         }
     }
 
@@ -99,7 +99,7 @@ public class AlmaUserServiceTest {
             assertEquals("Fredrik", user.getFirstName());
         } catch (BadRequestException e) {
             WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
-            logger.error(res.getErrorList().getErrors().get(0).getErrorMessage());
+            logger.error(res.getErrorList().getError().get(0).getErrorMessage());
             assert(false);
         }
     }
