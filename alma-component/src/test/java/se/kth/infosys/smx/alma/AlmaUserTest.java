@@ -23,6 +23,8 @@
  */
 package se.kth.infosys.smx.alma;
 
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jacksonxml.JacksonXMLDataFormat;
 import org.apache.camel.component.jacksonxml.ListJacksonXMLDataFormat;
@@ -32,6 +34,7 @@ import org.apache.camel.model.dataformat.JaxbDataFormat;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Test;
 
+import se.kth.infosys.smx.alma.internal.AlmaMessage;
 import se.kth.infosys.smx.alma.model.User;
 
 public class AlmaUserTest extends CamelTestSupport {
@@ -48,15 +51,24 @@ public class AlmaUserTest extends CamelTestSupport {
 
         assertMockEndpointsSatisfied();
 
-        User user = mock.getExchanges().get(0).getIn().getBody(User.class);
+        Message in;
+        User user;
+
+        in = mock.getExchanges().get(0).getIn();
+        user = in.getBody(User.class);
+        assertEquals(AlmaMessage.Status.Ok, in.getHeader(AlmaMessage.Header.Status));
         assertEquals("Fredrik", user.getFirstName());
         assertEquals("Jönsson", user.getLastName());
 
-        user = mock2.getExchanges().get(0).getIn().getBody(User.class);
+        in = mock2.getExchanges().get(0).getIn();
+        user = in.getBody(User.class);
+        assertEquals(AlmaMessage.Status.Ok, in.getHeader(AlmaMessage.Header.Status));
         assertEquals("Magnus", user.getFirstName());
         assertEquals("Jönsson", user.getLastName());
 
-        user = mock3.getExchanges().get(0).getIn().getBody(User.class);
+        in = mock3.getExchanges().get(0).getIn();
+        user = in.getBody(User.class);
+        assertEquals(AlmaMessage.Status.Ok, in.getHeader(AlmaMessage.Header.Status));
         assertEquals("Fredrik", user.getFirstName());
         assertEquals("Jönsson", user.getLastName());
     }

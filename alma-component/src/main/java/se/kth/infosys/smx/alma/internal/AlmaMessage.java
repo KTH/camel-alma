@@ -5,6 +5,7 @@ public final class AlmaMessage {
         public static final String Operation = "almaOperation";
         public static final String Api = "almaApi";
         public static final String UserId = "almaUserId";
+        public static final String Status = "almaStatus";
     }
     public static final class Operation {
         public static final String Create = "create";
@@ -15,5 +16,9 @@ public final class AlmaMessage {
     }
     public static final class Api {
         public static final String Users = "users";
+    }
+    public static final class Status {
+        public static final String Ok = "OK";
+        public static final String Failed = "FAILED";
     }
 }

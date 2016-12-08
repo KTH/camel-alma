@@ -49,13 +49,14 @@ any value of a corresponding header in the message is ignored.
 | almaApi | Corresponds to `api` in the URI, the only supported value is 'users' |
 | almaOperation | Corresponds to `operation` in the URI |
 | almaUserId | An ALMA unique user ID. We currently match against all unique ID types. Make sure they don't overlap. |
+| almaStatus | Status after operation, either of 'OK' or 'FAILED'. |
 
 | Operations | Description | Body |
 |------------|-------------|------|
 | create | Create a user. | ALMA model User Java object. |
 | read | Get a user, user id must be specified with `almaUserId`. | *none* |
 | update | Update the user, user id can be specified with `almaUserId`. | ALMA model User Java object. |
-| delete | Delete a user, user id must be specified with `almaUserId`. | *none* |
+| delete | Delete a user, user id must be specified with `almaUserId`. If user does not exist it will complete successfully, but the almaStatus will be set to 'FAILED'. | *none* |
 | createOrUpdate | Will create a user, or try to update if it already exists. | ALMA model User Java object. |
 
 ## Development

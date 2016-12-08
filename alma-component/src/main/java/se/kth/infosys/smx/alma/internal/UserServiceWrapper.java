@@ -26,6 +26,7 @@ package se.kth.infosys.smx.alma.internal;
 import javax.ws.rs.BadRequestException;
 
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.util.ExchangeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,10 +58,13 @@ public class UserServiceWrapper {
      * @throws Exception on errors.
      */
     public void updateUser(final Exchange exchange) throws Exception {
+        final Message in = exchange.getIn();
+        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
         User user = exchange.getIn().getMandatoryBody(User.class);
 
         log.debug("Updating user with id {} in ALMA", user.getPrimaryId());
-        exchange.getOut().setBody(userService.updateUser(user));
+        in.setBody(userService.updateUser(user));
+        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
     }
 
     /**
@@ -69,8 +73,10 @@ public class UserServiceWrapper {
      * @throws Exception on errors.
      */
     public void createOrUpdateUser(final Exchange exchange) throws Exception {
-        User user = exchange.getIn().getMandatoryBody(User.class);
-        String userId = exchange.getIn().getHeader(AlmaMessage.Header.UserId, String.class);
+        final Message in = exchange.getIn();
+        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
+        User user = in.getMandatoryBody(User.class);
+        String userId = in.getHeader(AlmaMessage.Header.UserId, String.class);
 
         if (userId == null) {
             userId = user.getPrimaryId();
@@ -78,7 +84,8 @@ public class UserServiceWrapper {
 
         try {
             log.debug("Updating user {} with id {} in ALMA", user, userId);
-            exchange.getIn().setBody(userService.updateUser(user, userId));
+            in.setBody(userService.updateUser(user, userId));
+            in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
         } catch (BadRequestException e) {
             if (e.getResponse().getStatus() != 400) {
                 log.error("Failed to update user", e);
@@ -92,7 +99,8 @@ public class UserServiceWrapper {
             e.getResponse().close();
 
             log.debug("User not found, creating user with id {} in ALMA", user.getPrimaryId());
-            exchange.getIn().setBody(userService.createUser(user));
+            in.setBody(userService.createUser(user));
+            in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
         }
     }
 
@@ -102,10 +110,13 @@ public class UserServiceWrapper {
      * @throws Exception on errors.
      */
     public void createUser(final Exchange exchange) throws Exception {
-        User user = exchange.getIn().getMandatoryBody(User.class);
+        final Message in = exchange.getIn();
+        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
+        User user = in.getMandatoryBody(User.class);
 
         log.debug("Creating user with id {} in ALMA", user.getPrimaryId());
-        exchange.getIn().setBody(userService.createUser(user));
+        in.setBody(userService.createUser(user));
+        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
     }
 
     /**
@@ -114,10 +125,13 @@ public class UserServiceWrapper {
      * @throws Exception on errors.
      */
     public void getUser(final Exchange exchange) throws Exception {
+        final Message in = exchange.getIn();
+        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
         String userId = ExchangeHelper.getMandatoryHeader(exchange, AlmaMessage.Header.UserId, String.class);
 
         log.debug("Getting user with id {} from ALMA", userId);
-        exchange.getIn().setBody(userService.getUser(userId));
+        in.setBody(userService.getUser(userId));
+        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
     }
 
     /**
@@ -126,13 +140,17 @@ public class UserServiceWrapper {
      * @throws Exception on errors.
      */
     public void deleteUser(final Exchange exchange) throws Exception {
+        final Message in = exchange.getIn();
+        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
         String userId = ExchangeHelper.getMandatoryHeader(exchange, AlmaMessage.Header.UserId, String.class);
 
         log.debug("Getting user with id {} from ALMA", userId);
         if (userService.deleteUser(userId)) {
             log.debug("User with id {} deleted from Alma.", userId);
+            in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
         } else {
             log.debug("User with id {} NOT deleted from Alma, maybe not found.", userId);
+            in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
         }
     }
 }
