@@ -1,2 +1,9 @@
+# API authentication
 alma.host=api-eu.hosted.exlibrisgroup.com
 alma.apikey=...
+
+# Test data, adapt to real data in your environment.
+test.data.user.other_id=someId
+test.data.user.first_name=Firstname
+test.data.user.last_name=Lastname
+test.data.user.primary_id=primaryId@your.site
