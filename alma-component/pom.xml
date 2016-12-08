@@ -29,7 +29,7 @@
   <parent>
     <artifactId>alma</artifactId>
     <groupId>se.kth.infosys.smx.alma</groupId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
 
   <artifactId>alma-component</artifactId>
