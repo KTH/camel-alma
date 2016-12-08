@@ -137,6 +137,7 @@ public class AlmaUserService extends AlmaService {
     /**
      * Remove a User from ALMA. 
      * @param userId the user identifier
+     * @return true if User is deleted, false if not, even if not found.
      */
     public boolean deleteUser(final String userId) {
         Response res = alma.path("/{user_id}")
