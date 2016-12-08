@@ -89,6 +89,8 @@ public class UserServiceWrapper {
                 log.error("Failed to update user", e);
                 throw e;
             }
+            e.getResponse().close();
+
             log.debug("User not found, creating user with id {} in ALMA", user.getPrimaryId());
             exchange.getIn().setBody(userService.createUser(user));
         }

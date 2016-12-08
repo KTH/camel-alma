@@ -41,6 +41,8 @@ public abstract class AlmaService {
         this.alma = ClientBuilder.newBuilder()
                 .sslContext(context)
                 .build()
+                .register(AlmaRequestFilter.class)
+                .register(AlmaResponseFilter.class)
                 .target(target);
     }
 }

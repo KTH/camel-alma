@@ -56,7 +56,7 @@ public class AlmaUserService extends AlmaService {
                 .resolveTemplate("user_id", userId)
                 .queryParam("apikey", apiKey)
                 .request()
-                .accept(MediaType.APPLICATION_XML)
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
                 .get(User.class);
     }
 
@@ -70,8 +70,8 @@ public class AlmaUserService extends AlmaService {
                 .resolveTemplate("user_id", user.getPrimaryId())
                 .queryParam("apikey", apiKey)
                 .request()
-                .accept(MediaType.APPLICATION_XML)
-                .put(Entity.entity(user, MediaType.APPLICATION_XML), User.class);
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
+                .put(Entity.entity(user, MediaType.APPLICATION_XML_TYPE.withCharset("utf-8")), User.class);
     }
 
     /**
@@ -85,8 +85,8 @@ public class AlmaUserService extends AlmaService {
                 .resolveTemplate("user_id", userId)
                 .queryParam("apikey", apiKey)
                 .request()
-                .accept(MediaType.APPLICATION_XML)
-                .put(Entity.entity(user, MediaType.APPLICATION_XML), User.class);
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
+                .put(Entity.entity(user, MediaType.APPLICATION_XML_TYPE.withCharset("utf-8")), User.class);
     }
 
     /**
@@ -98,8 +98,8 @@ public class AlmaUserService extends AlmaService {
         return alma.path("")
                 .queryParam("apikey", apiKey)
                 .request()
-                .accept(MediaType.APPLICATION_XML)
-                .post(Entity.entity(user, MediaType.APPLICATION_XML), User.class);
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
+                .post(Entity.entity(user, MediaType.APPLICATION_XML_TYPE.withCharset("utf-8")), User.class);
     }
 
     /**
@@ -111,6 +111,7 @@ public class AlmaUserService extends AlmaService {
             .resolveTemplate("user_id", userId)
             .queryParam("apikey", apiKey)
             .request()
-            .delete();
+            .delete()
+            .close();
     }
 }
