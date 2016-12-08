@@ -24,7 +24,6 @@
 package se.kth.infosys.alma;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
@@ -36,7 +35,6 @@ import org.junit.Test;
 
 import se.kth.infosys.smx.alma.model.ObjectFactory;
 import se.kth.infosys.smx.alma.model.User;
-import se.kth.infosys.smx.alma.model.Users;
 import se.kth.infosys.smx.alma.model.User.AccountType;
 import se.kth.infosys.smx.alma.model.User.RecordType;
 import se.kth.infosys.smx.alma.model.User.UserGroup;
