@@ -108,19 +108,29 @@ public class AlmaUserServiceTest {
         assertEquals(true, alma.deleteUser(TEST_USER.getPrimaryId()));
     }
 
-//    @Test
-//    public void testGetUserKthid() {
-//        try {
-//            User user = alma.getUser("u1fjolle");
-//            assertEquals("fjo@kth.se", user.getPrimaryId());
-//            assertEquals("Fredrik", user.getFirstName());
-//            assertEquals("Jönsson", user.getLastName());
-//        } catch (BadRequestException e) {
-//            WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
-//            logger.error(res.getErrorList().getError().get(0).getErrorMessage());
-//            assert(false);
-//        }
-//     }
+    /**
+     * This is rather depending on our specific environment. 
+     * Configure your data in test.properties.
+     */
+    @Test
+    public void testGetUserSomeOtherId() {
+        try {
+            User user = alma.getUser(properties.getProperty("test.data.user.other_id"));
+            assertEquals(
+                    properties.getProperty("test.data.user.primary_id"), 
+                    user.getPrimaryId());
+            assertEquals(
+                    properties.getProperty("test.data.user.first_name"), 
+                    user.getFirstName());
+            assertEquals(
+                    properties.getProperty("test.data.user.last_name"), 
+                    user.getLastName());
+        } catch (BadRequestException e) {
+            WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
+            logger.error(res.getErrorList().getError().get(0).getErrorMessage());
+            assert(false);
+        }
+     }
 
     @Test
     public void testGetNotExistingUser() {
@@ -135,10 +145,10 @@ public class AlmaUserServiceTest {
         }
     }
 
-    @Test
-    public void testGetUsers() {
-        Users users = alma.getUsers();
-        System.out.println("Bla: " + users.getUser().size());
-        assertTrue(users.getUser().size() > 0);
-    }
+// You will have to enable this yourself if you want it.
+//    @Test
+//    public void testGetUsers() {
+//        Users users = alma.getUsers();
+//        assertTrue(users.getUser().size() > 0);
+//    }
 }
