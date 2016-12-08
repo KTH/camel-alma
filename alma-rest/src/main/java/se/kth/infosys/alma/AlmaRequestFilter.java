@@ -13,6 +13,8 @@ public class AlmaRequestFilter implements ClientRequestFilter {
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
+        LOG.debug("Target: {}", requestContext.getUri().toString());
+        LOG.debug("Method: {}", requestContext.getMethod());
         LOG.debug("Headers: {}", requestContext.getStringHeaders());
         if (requestContext.getEntity() != null) {
             LOG.debug(requestContext.getEntity().toString());

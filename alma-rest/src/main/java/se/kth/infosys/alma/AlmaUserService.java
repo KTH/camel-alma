@@ -25,6 +25,7 @@ package se.kth.infosys.alma;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import se.kth.infosys.smx.alma.model.User;
 
@@ -106,12 +107,13 @@ public class AlmaUserService extends AlmaService {
      * Remove a User from ALMA. 
      * @param userId the user identifier
      */
-    public void deleteUser(final String userId) {
-        alma.path("")
+    public boolean deleteUser(final String userId) {
+        Response res = alma.path("/{user_id}")
             .resolveTemplate("user_id", userId)
             .queryParam("apikey", apiKey)
             .request()
-            .delete()
-            .close();
+            .delete();
+
+        return res.getStatus() == 204;
     }
 }
