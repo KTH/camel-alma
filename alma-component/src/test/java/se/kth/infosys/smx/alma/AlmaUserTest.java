@@ -23,11 +23,8 @@
  */
 package se.kth.infosys.smx.alma;
 
-import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.jacksonxml.JacksonXMLDataFormat;
-import org.apache.camel.component.jacksonxml.ListJacksonXMLDataFormat;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.properties.PropertiesComponent;
 import org.apache.camel.model.dataformat.JaxbDataFormat;
