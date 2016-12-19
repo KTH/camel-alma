@@ -23,18 +23,28 @@
  */
 package se.kth.infosys.smx.alma;
 
+import java.util.Properties;
+
 import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.properties.PropertiesComponent;
 import org.apache.camel.model.dataformat.JaxbDataFormat;
 import org.apache.camel.test.junit4.CamelTestSupport;
+import org.junit.Before;
 import org.junit.Test;
 
 import se.kth.infosys.smx.alma.internal.AlmaMessage;
 import se.kth.infosys.smx.alma.model.User;
 
 public class AlmaUserTest extends CamelTestSupport {
+    private static final Properties properties = new Properties();
+
+    @Before
+    public void setup() throws Exception {
+        properties.load(ClassLoader.getSystemResourceAsStream("test.properties"));
+    }
+
     @Test
     public void testAlmaComponent() throws Exception {
         MockEndpoint mock = getMockEndpoint("mock:result");
@@ -54,20 +64,20 @@ public class AlmaUserTest extends CamelTestSupport {
         in = mock.getExchanges().get(0).getIn();
         user = in.getBody(User.class);
         assertEquals(AlmaMessage.Status.Ok, in.getHeader(AlmaMessage.Header.Status));
-        assertEquals("Fredrik", user.getFirstName());
-        assertEquals("Jönsson", user.getLastName());
+        assertEquals(properties.getProperty("test.data.user.first_name"), user.getFirstName());
+        assertEquals(properties.getProperty("test.data.user.last_name"), user.getLastName());
 
         in = mock2.getExchanges().get(0).getIn();
         user = in.getBody(User.class);
         assertEquals(AlmaMessage.Status.Ok, in.getHeader(AlmaMessage.Header.Status));
         assertEquals("Magnus", user.getFirstName());
-        assertEquals("Jönsson", user.getLastName());
+        assertEquals(properties.getProperty("test.data.user.last_name"), user.getLastName());
 
         in = mock3.getExchanges().get(0).getIn();
         user = in.getBody(User.class);
         assertEquals(AlmaMessage.Status.Ok, in.getHeader(AlmaMessage.Header.Status));
-        assertEquals("Fredrik", user.getFirstName());
-        assertEquals("Jönsson", user.getLastName());
+        assertEquals(properties.getProperty("test.data.user.first_name"), user.getFirstName());
+        assertEquals(properties.getProperty("test.data.user.last_name"), user.getLastName());
     }
 
     @Override
@@ -99,7 +109,7 @@ public class AlmaUserTest extends CamelTestSupport {
                   .marshal(jaxb)
                   .to("log:test3")
                   .setHeader("first_name")
-                  .simple("Fredrik")
+                  .simple("properties:test.data.user.first_name")
                   .to("xslt:replace-firstname.xslt")
                   .unmarshal(jaxb)
                   .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/createOrUpdate")
