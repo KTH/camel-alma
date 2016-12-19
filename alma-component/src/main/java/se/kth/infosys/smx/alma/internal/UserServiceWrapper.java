@@ -23,6 +23,8 @@
  */
 package se.kth.infosys.smx.alma.internal;
 
+import java.util.Iterator;
+
 import javax.ws.rs.BadRequestException;
 
 import org.apache.camel.Exchange;
@@ -33,6 +35,8 @@ import org.slf4j.LoggerFactory;
 
 import se.kth.infosys.alma.AlmaUserService;
 import se.kth.infosys.smx.alma.model.User;
+import se.kth.infosys.smx.alma.model.UserIdentifier;
+import se.kth.infosys.smx.alma.model.UserIdentifiers;
 import se.kth.infosys.smx.alma.model.WebServiceResult;
 
 /**
@@ -62,8 +66,10 @@ public class UserServiceWrapper {
         in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
         User user = exchange.getIn().getMandatoryBody(User.class);
 
-        log.debug("Updating user with id {} in ALMA", user.getPrimaryId());
-        in.setBody(userService.updateUser(user));
+        User currentUser = getUserByUser(user);
+        copyExternalIdFromTo(currentUser, user);
+        log.debug("Updating user with id {} in ALMA", currentUser.getPrimaryId());
+        in.setBody(userService.updateUser(user, currentUser.getPrimaryId()));
         in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
     }
 
@@ -76,15 +82,11 @@ public class UserServiceWrapper {
         final Message in = exchange.getIn();
         in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
         User user = in.getMandatoryBody(User.class);
-        String userId = in.getHeader(AlmaMessage.Header.UserId, String.class);
-
-        if (userId == null) {
-            userId = user.getPrimaryId();
-        }
 
         try {
-            log.debug("Updating user {} with id {} in ALMA", user, userId);
-            in.setBody(userService.updateUser(user, userId));
+            User currentUser = getUserByUser(user);
+            copyExternalIdFromTo(currentUser, user);
+            in.setBody(userService.updateUser(user, currentUser.getPrimaryId()));
             in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
         } catch (BadRequestException e) {
             if (e.getResponse().getStatus() != 400) {
@@ -101,6 +103,13 @@ public class UserServiceWrapper {
             log.debug("User not found, creating user with id {} in ALMA", user.getPrimaryId());
             in.setBody(userService.createUser(user));
             in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
+        }
+    }
+
+    private void copyExternalIdFromTo(User currentUser, User user) {
+        if (currentUser.getExternalId() != null && 
+                ! currentUser.getExternalId().isEmpty()) {
+            user.setExternalId(currentUser.getExternalId());
         }
     }
 
@@ -127,11 +136,33 @@ public class UserServiceWrapper {
     public void getUser(final Exchange exchange) throws Exception {
         final Message in = exchange.getIn();
         in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
-        String userId = ExchangeHelper.getMandatoryHeader(exchange, AlmaMessage.Header.UserId, String.class);
 
-        log.debug("Getting user with id {} from ALMA", userId);
-        in.setBody(userService.getUser(userId));
+        if (in.getHeader(AlmaMessage.Header.UserId) != null) {
+            in.setBody(getUserById(in.getHeader(AlmaMessage.Header.UserId, String.class)));
+        } else {
+            in.setBody(getUserByUser(in.getMandatoryBody(User.class)));
+        }
         in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
+    }
+
+    private User getUserByUser(User user) {
+        UserIdentifiers identifiers = user.getUserIdentifiers();
+        Iterator<UserIdentifier> iterator = identifiers.getUserIdentifier().iterator();
+        while (iterator.hasNext()) {
+            UserIdentifier identifier = (UserIdentifier) iterator.next();
+            try {
+                log.debug("Finding user by identifer: {}: {}",
+                        identifier.getIdType().getValue(),
+                        identifier.getValue());
+                return userService.getUser(identifier.getValue());
+            } catch (Exception e) {}
+        }
+        return userService.getUser(user.getPrimaryId());
+    }
+
+    private User getUserById(String userId) {
+        log.debug("Getting user with id {} from ALMA", userId);
+        return userService.getUser(userId);
     }
 
     /**
