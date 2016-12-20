@@ -86,6 +86,9 @@ public class AlmaProducer extends DefaultProducer {
         case AlmaMessage.Operation.CreateOrUpdate:
             userService.createOrUpdateUser(exchange);
             break;
+        case AlmaMessage.Operation.Delete:
+            userService.deleteUser(exchange);
+            break;
         default:
             throw new UnsupportedOperationException("Operation: " + operation + " not supported");
         }
