@@ -88,6 +88,7 @@ public class UserServiceWrapper {
             copyExternalIdFromTo(currentUser, user);
             in.setBody(userService.updateUser(user, currentUser.getPrimaryId()));
             in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
+            return;
         } catch (BadRequestException e) {
             if (e.getResponse().getStatus() != 400) {
                 log.error("Failed to update user", e);
@@ -99,11 +100,10 @@ public class UserServiceWrapper {
                 throw e;
             }
             e.getResponse().close();
-
-            log.debug("User not found, creating user with id {} in ALMA", user.getPrimaryId());
-            in.setBody(userService.createUser(user));
-            in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
         }
+
+        log.debug("User not found, creating user with id {} in ALMA", user.getPrimaryId());
+        createUser(exchange);
     }
 
     private void copyExternalIdFromTo(User currentUser, User user) {
@@ -123,9 +123,22 @@ public class UserServiceWrapper {
         in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
         User user = in.getMandatoryBody(User.class);
 
-        log.debug("Creating user with id {} in ALMA", user.getPrimaryId());
-        in.setBody(userService.createUser(user));
-        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
+        try {
+            log.debug("Creating user with id {} in ALMA", user.getPrimaryId());
+            in.setBody(userService.createUser(user));
+            in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
+        } catch (BadRequestException e) {
+            if (e.getResponse().getStatus() != 400) {
+                log.error("Failed to create user", e);
+            } else {
+                WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);
+                String code = res.getErrorList().getError().get(0).getErrorCode();
+                String message = res.getErrorList().getError().get(0).getErrorMessage();
+                log.error("Code: " + code + ", message: " + message, e);
+                e.getResponse().close();
+            }
+            throw e;
+        }
     }
 
     /**
