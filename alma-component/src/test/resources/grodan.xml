@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<user>
+  <record_type desc="Public">PUBLIC</record_type>
+  <primary_id>grodan.boll@domain.nu</primary_id>
+  <first_name>Grodan</first_name>
+  <middle_name/>
+  <last_name>Boll</last_name>
+  <user_group>10</user_group>
+  <account_type desc="External">EXTERNAL</account_type>
+  <external_id>SIS</external_id>
+</user>
