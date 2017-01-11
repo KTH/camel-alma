@@ -36,6 +36,7 @@ import org.junit.Test;
 import se.kth.infosys.smx.alma.model.ObjectFactory;
 import se.kth.infosys.smx.alma.model.User;
 import se.kth.infosys.smx.alma.model.User.AccountType;
+import se.kth.infosys.smx.alma.model.User.PreferredLanguage;
 import se.kth.infosys.smx.alma.model.User.RecordType;
 import se.kth.infosys.smx.alma.model.User.UserGroup;
 import se.kth.infosys.smx.alma.model.WebServiceResult;
@@ -52,7 +53,7 @@ public class AlmaUserServiceTest {
         TEST_USER.setPrimaryId("grodan.boll@domain.nu");
         TEST_USER.setFirstName("Grodan");
         TEST_USER.setLastName("Boll");
-        TEST_USER.setExternalId("SIS_temp");
+        TEST_USER.setExternalId("SIS");
         AccountType accountType = objectFactory.createUserAccountType();
         accountType.setValue("EXTERNAL");
         accountType.setDesc("External");
@@ -64,6 +65,9 @@ public class AlmaUserServiceTest {
         recordType.setValue("PUBLIC");
         recordType.setDesc("Public");
         TEST_USER.setRecordType(recordType);
+        PreferredLanguage lang = objectFactory.createUserPreferredLanguage();
+        lang.setValue("en");
+        TEST_USER.setPreferredLanguage(lang);
     }
 
     @Before
