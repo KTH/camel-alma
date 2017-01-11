@@ -14,8 +14,7 @@ public class AlmaResponseFilter implements ClientResponseFilter {
 
     @Override
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
-        LOG.debug("Response status: {} {}", responseContext.getStatus(), responseContext.getStatusInfo().toString());
-        LOG.debug("Response headers: {}", responseContext.getHeaders());
+        LOG.trace("Response status: {} {}", responseContext.getStatus(), responseContext.getStatusInfo().toString());
+        LOG.trace("Response headers: {}", responseContext.getHeaders());
     }
-
 }
