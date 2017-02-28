@@ -50,7 +50,7 @@ import se.kth.infosys.smx.alma.model.WebServiceResult;
 public class UserServiceWrapper {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final AlmaUserService userService;
-    private final HashSet<String> NO_OVERWRITE_PROPERTIES = new HashSet<String>(Arrays.asList(new String[]{"externalId", "class"}));
+    private final HashSet<String> NO_UPDATE_PROPERTIES = new HashSet<String>(Arrays.asList(new String[]{"externalId"}));
 
     /**
      * Constructor
@@ -73,7 +73,7 @@ public class UserServiceWrapper {
         User user = exchange.getIn().getMandatoryBody(User.class);
 
         User currentUser = getUserByUser(user);
-        copyPropertiesFromTo(user, currentUser);
+        copyPropertiesFromTo(currentUser, user);
         log.debug("Updating user with id {} in ALMA", currentUser.getPrimaryId());
         in.setBody(userService.updateUser(user, currentUser.getPrimaryId()));
         in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
@@ -81,7 +81,8 @@ public class UserServiceWrapper {
 
     private void copyPropertiesFromTo(User from, User to) throws Exception {
         for (PropertyDescriptor property : PropertyUtils.getPropertyDescriptors(User.class)) {
-            if (!NO_OVERWRITE_PROPERTIES.contains(property.getName())) {
+            if (NO_UPDATE_PROPERTIES.contains(property.getName())) {
+                log.debug("Copying property {}", property.getName());
                 Method read = property.getReadMethod();
                 Method write = property.getWriteMethod();
                 if (read.invoke(from) != null) {
