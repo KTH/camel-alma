@@ -23,6 +23,9 @@
  */
 package se.kth.infosys.smx.alma.internal;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.ws.rs.BadRequestException;
@@ -45,6 +48,7 @@ import se.kth.infosys.smx.alma.model.WebServiceResult;
 public class UserServiceWrapper {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final AlmaUserService userService;
+    private final HashSet<String> NO_OVERWRITE_PROPERTIES = new HashSet<String>(Arrays.asList(new String[]{"externalId"}));
 
     /**
      * Constructor
@@ -67,10 +71,21 @@ public class UserServiceWrapper {
         User user = exchange.getIn().getMandatoryBody(User.class);
 
         User currentUser = getUserByUser(user);
-        copyExternalIdFromTo(currentUser, user);
+        copyPropertiesFromTo(user, currentUser);
         log.debug("Updating user with id {} in ALMA", currentUser.getPrimaryId());
         in.setBody(userService.updateUser(user, currentUser.getPrimaryId()));
         in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
+    }
+
+    private void copyPropertiesFromTo(User from, User to) throws Exception {
+        Field[] fields = User.class.getDeclaredFields();
+        for (Field field : fields) {
+            if (!NO_OVERWRITE_PROPERTIES.contains(field.getName())
+                    && field.isAccessible()
+                    && (field.get(from) != null)) {
+                field.set(to, field.get(from));
+            }
+        }
     }
 
     /**
@@ -79,16 +94,8 @@ public class UserServiceWrapper {
      * @throws Exception on errors.
      */
     public void createOrUpdateUser(final Exchange exchange) throws Exception {
-        final Message in = exchange.getIn();
-        in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Failed);
-        User user = in.getMandatoryBody(User.class);
-
         try {
-            User currentUser = getUserByUser(user);
-            copyExternalIdFromTo(currentUser, user);
-            in.setBody(userService.updateUser(user, currentUser.getPrimaryId()));
-            in.setHeader(AlmaMessage.Header.Status, AlmaMessage.Status.Ok);
-            return;
+            updateUser(exchange);
         } catch (BadRequestException e) {
             if (e.getResponse().getStatus() != 400) {
                 log.error("Failed to update user", e);
@@ -100,16 +107,9 @@ public class UserServiceWrapper {
                 throw e;
             }
             e.getResponse().close();
-        }
 
-        log.debug("User not found, creating user with id {} in ALMA", user.getPrimaryId());
-        createUser(exchange);
-    }
-
-    private void copyExternalIdFromTo(User currentUser, User user) {
-        if (currentUser.getExternalId() != null && 
-                ! currentUser.getExternalId().isEmpty()) {
-            user.setExternalId(currentUser.getExternalId());
+            log.debug("Could not update non-existing user in Alma, creating instead.");
+            createUser(exchange);
         }
     }
 
