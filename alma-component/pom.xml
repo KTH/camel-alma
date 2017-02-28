@@ -93,6 +93,11 @@
       <version>${camel-version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.9.3</version>
+    </dependency>
   </dependencies>
 
   <build>
