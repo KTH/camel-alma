@@ -23,7 +23,8 @@
  */
 package se.kth.infosys.smx.alma.internal;
 
-import java.lang.reflect.Field;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,6 +34,7 @@ import javax.ws.rs.BadRequestException;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.util.ExchangeHelper;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +50,7 @@ import se.kth.infosys.smx.alma.model.WebServiceResult;
 public class UserServiceWrapper {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final AlmaUserService userService;
-    private final HashSet<String> NO_OVERWRITE_PROPERTIES = new HashSet<String>(Arrays.asList(new String[]{"externalId"}));
+    private final HashSet<String> NO_OVERWRITE_PROPERTIES = new HashSet<String>(Arrays.asList(new String[]{"externalId", "class"}));
 
     /**
      * Constructor
@@ -78,12 +80,13 @@ public class UserServiceWrapper {
     }
 
     private void copyPropertiesFromTo(User from, User to) throws Exception {
-        Field[] fields = User.class.getDeclaredFields();
-        for (Field field : fields) {
-            if (!NO_OVERWRITE_PROPERTIES.contains(field.getName())
-                    && field.isAccessible()
-                    && (field.get(from) != null)) {
-                field.set(to, field.get(from));
+        for (PropertyDescriptor property : PropertyUtils.getPropertyDescriptors(User.class)) {
+            if (!NO_OVERWRITE_PROPERTIES.contains(property.getName())) {
+                Method read = property.getReadMethod();
+                Method write = property.getWriteMethod();
+                if (read.invoke(from) != null) {
+                    write.invoke(to, read.invoke(from));
+                }
             }
         }
     }

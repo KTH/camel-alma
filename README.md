@@ -27,7 +27,7 @@ Use with maven:
     <dependency>
       <groupId>se.kth.infosys.smx.alma</groupId>
       <artifactId>alma-rest</artifactId>
-      <version>1.3.0</version>
+      <version>1.3.1</version>
     </dependency>
 ```
 
@@ -41,7 +41,7 @@ Use with maven:
     <dependency>
       <groupId>se.kth.infosys.smx.alma</groupId>
       <artifactId>alma-component</artifactId>
-      <version>1.3.0</version>
+      <version>1.3.1</version>
     </dependency>
 ```
 
