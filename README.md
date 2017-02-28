@@ -22,10 +22,28 @@ XML and JSON with libraries such as Jackson.
 
 See [alma-rest/README.md](alma-rest/README.md) for more information.
 
+Use with maven:
+```
+    <dependency>
+      <groupId>se.kth.infosys.smx.alma</groupId>
+      <artifactId>alma-rest</artifactId>
+      <version>1.3.0</version>
+    </dependency>
+```
+
 ### alma-component Camel component
 
 Exposes the functionality of the REST interface as a Camel component to 
 use in Camel routes. See the [alma-component/README.md](alma-component/README.md).
+
+Use with maven:
+```
+    <dependency>
+      <groupId>se.kth.infosys.smx.alma</groupId>
+      <artifactId>alma-component</artifactId>
+      <version>1.3.0</version>
+    </dependency>
+```
 
 ### alma-feature Karaf feature
 
