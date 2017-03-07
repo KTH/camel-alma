@@ -32,7 +32,7 @@
   <url>https://www.kth.se/</url>
   <description>Project for components making up the ExLibris ALMA integration.</description>
   <organization>
-    <name>KTH</name>
+    <name>Kungliga Tekniska högskolan</name>
     <url>https://www.kth.se</url>
   </organization>
 
@@ -149,13 +149,6 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
         <version>2.2</version>
-      </plugin>
-      <plugin>
-        <artifactId>maven-scm-plugin</artifactId>
-        <version>1.9.4</version>
-        <configuration>
-          <tag>${project.artifactId}-${project.version}</tag>
-        </configuration>
       </plugin>
     </plugins>
   </build>
