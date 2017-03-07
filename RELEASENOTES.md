@@ -1,7 +1,6 @@
 # Release notes
 
-## 1.3.1
+## 1.3.2
 
-* When updating a user in Alma, keep current properties that are
-  not present in the user data to update to. This mirrors the
-  behaviour in file import.
+* Support tracing of calls to Alma, including response bodies.
+* Make it easier to keep properties currently in Alma in updates from SIS.
