@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.4.0
+
+* Update to Camel 2.19.x.
+
 ## 1.3.2
 
 * Support tracing of calls to Alma, including response bodies.
