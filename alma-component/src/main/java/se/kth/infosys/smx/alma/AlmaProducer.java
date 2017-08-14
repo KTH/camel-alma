@@ -40,7 +40,7 @@ public class AlmaProducer extends DefaultProducer {
     public AlmaProducer(AlmaEndpoint endpoint) throws Exception {
         super(endpoint);
         this.endpoint = endpoint;
-        this.userService = new UserServiceWrapper(endpoint.getHost(), endpoint.getApiKey());
+        this.userService = new UserServiceWrapper(endpoint.getEnvironment(), endpoint.getApiKey());
     }
 
     /**

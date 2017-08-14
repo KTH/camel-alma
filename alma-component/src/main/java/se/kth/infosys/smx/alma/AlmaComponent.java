@@ -28,23 +28,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
-import org.apache.camel.impl.UriEndpointComponent;
+import org.apache.camel.impl.DefaultComponent;
 
 /**
  * Represents the component that manages {@link AlmaEndpoint}.
  */
-public class AlmaComponent extends UriEndpointComponent {
+public class AlmaComponent extends DefaultComponent {
     private static Pattern PATH_PATTERN = Pattern.compile("(/(?<api>users))+(/(?<operation>create|read|update|delete|createOrUpdate))+");
-
-    public AlmaComponent() {
-        super(AlmaEndpoint.class);
-    }
-
-    public AlmaComponent(CamelContext context) {
-        super(context, AlmaEndpoint.class);
-    }
 
     /**
      * {@inheritDoc}
@@ -54,7 +45,7 @@ public class AlmaComponent extends UriEndpointComponent {
         setProperties(endpoint, parameters);
 
         URI formattedUri = new URI(uri);
-        endpoint.setHost(formattedUri.getHost());
+        endpoint.setEnvironment(formattedUri.getHost());
         if (formattedUri.getUserInfo() != null) {
             String[] auth = formattedUri.getUserInfo().split(":");
             assert("apikey".equals(auth[0]));

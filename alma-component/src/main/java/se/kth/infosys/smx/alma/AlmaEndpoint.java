@@ -26,6 +26,8 @@ package se.kth.infosys.smx.alma;
 import org.apache.camel.Consumer;
 import org.apache.camel.Processor;
 import org.apache.camel.Producer;
+import org.apache.camel.api.management.ManagedAttribute;
+import org.apache.camel.api.management.ManagedResource;
 import org.apache.camel.impl.DefaultEndpoint;
 import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.UriEndpoint;
@@ -34,18 +36,20 @@ import org.apache.camel.spi.UriPath;
 /**
  * Represents a Alma Component endpoint.
  */
+@ManagedResource
 @UriEndpoint(scheme = "alma", title = "Alma Component", syntax="alma://apikey@environment[/api][/operation]", consumerClass = AlmaConsumer.class, label = "Alma Component")
 public class AlmaEndpoint extends DefaultEndpoint {
-    @UriPath @Metadata(required = "true")
-    private String host;
-    @UriPath @Metadata(required = "true")
+    @UriPath(label="producer", description = "ExLibris Alma target environment") @Metadata(required = "true")
+    private String environment;
+
+    @UriPath(label="producer", description = "API key to use with target environment") @Metadata(required = "true")
     private String apiKey;
 
+    @UriPath(label="producer", description = "Target API to use (only /users supported)")
     private String api;
-    private String operation;
 
-    public AlmaEndpoint() {
-    }
+    @UriPath(label="producer", description = "API operation")
+    private String operation;
 
     public AlmaEndpoint(String uri, AlmaComponent component) {
         super(uri, component);
@@ -74,23 +78,26 @@ public class AlmaEndpoint extends DefaultEndpoint {
 
     /**
      * Set environment for ExLibris ALMA api calls, e.g. api-eu.hosted.exlibrisgroup.com
-     * @param host the FQDN for the environment.
+     * @param environment the FQDN for the environment.
      */
-    public void setHost(String host) {
-        this.host = host;
+    @ManagedAttribute(description = "ExLibris ALMA target environment")
+    public void setEnvironment(String environment) {
+        this.environment = environment;
     }
 
     /**
      * @return the ExLibris ALMA environment.
      */
-    public String getHost() {
-        return this.host;
+    @ManagedAttribute(description = "ExLibris ALMA target environment")
+    public String getEnvironment() {
+        return this.environment;
     }
 
     /**
-     * Set the API to use for authentication with ExLibris ALMA.
+     * Set the API key to use for authentication with ExLibris ALMA.
      * @param apiKey the API key.
      */
+    @ManagedAttribute(description = "API key to use for authentication with ExLibris ALMA")
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
     }
@@ -98,6 +105,7 @@ public class AlmaEndpoint extends DefaultEndpoint {
     /**
      * @return the API key for the ExLibris ALMA environment.
      */
+    @ManagedAttribute(description = "API key to use for authentication with ExLibris ALMA")
     public String getApiKey() {
         return this.apiKey;
     }
@@ -106,6 +114,7 @@ public class AlmaEndpoint extends DefaultEndpoint {
      * Set the api to use with this endpoint.
      * @param api the ALMA api to use.
      */
+    @ManagedAttribute(description = "API to use with this ExLibris ALMA endpoint")
     public void setApi(String api) {
         this.api = api;
     }
@@ -114,6 +123,7 @@ public class AlmaEndpoint extends DefaultEndpoint {
      * Get the api to use with this endpoint.
      * @return the api.
      */
+    @ManagedAttribute(description = "API to use with this ExLibris ALMA endpoint")
     public String getApi() {
         return this.api;
     }
@@ -122,6 +132,7 @@ public class AlmaEndpoint extends DefaultEndpoint {
      * Set the API operation to use for this endpoint.
      * @param operation the ALMA api operation to use.
      */
+    @ManagedAttribute(description = "API operation to use with this ExLibris ALMA endpoint")
     public void setOperation(String operation) {
         this.operation = operation;
         
@@ -131,6 +142,7 @@ public class AlmaEndpoint extends DefaultEndpoint {
      * Get the operation to use with this endpoint.
      * @return the operation.
      */
+    @ManagedAttribute(description = "API operation to use with this ExLibris ALMA endpoint")
     public String getOperation() {
         return this.operation;
     }
