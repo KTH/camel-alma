@@ -27,7 +27,7 @@
   <parent>
     <groupId>se.kth.infosys.smx.alma</groupId>
     <artifactId>alma</artifactId>
-    <version>1.3.3-SNAPSHOT</version>
+    <version>1.4.0</version>
   </parent>
   <packaging>kar</packaging>
   <artifactId>alma-feature</artifactId>
