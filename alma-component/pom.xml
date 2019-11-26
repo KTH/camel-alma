@@ -29,7 +29,7 @@
   <parent>
     <artifactId>alma</artifactId>
     <groupId>se.kth.infosys.smx.alma</groupId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
   </parent>
 
   <artifactId>alma-component</artifactId>
@@ -91,7 +91,7 @@
     <defaultGoal>install</defaultGoal>
 
     <plugins>
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -105,7 +105,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.0</version>
         <configuration>
           <encoding>UTF-8</encoding>
         </configuration>

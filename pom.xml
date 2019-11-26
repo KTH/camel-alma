@@ -26,7 +26,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>se.kth.infosys.smx.alma</groupId>
   <artifactId>alma</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
   <packaging>pom</packaging>
   <name>KTH ALMA integration</name>
   <url>https://www.kth.se/</url>
@@ -39,49 +39,28 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <camel-version>2.19.1</camel-version>
+    <camel-version>2.24.2</camel-version>
   </properties>
 
-  <!-- License information required by Sonatype -->
-  <licenses>
-    <license>
-      <name>The MIT License (MIT)</name>
-      <url>https://opensource.org/licenses/MIT</url>
-    </license>
-  </licenses>
-  
-  <!-- Source control management required by Sonatype -->
-  <scm>
-    <url>https://github.com/kth/camel-alma</url>
-    <developerConnection>fjo@kth.se</developerConnection>
-    <connection>https://github.com/kth/camel-alma</connection>
-  </scm>
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/kth/camel-alma/issues</url>
-  </issueManagement>
-
-  <!-- Developer connection information required by Sonatype -->
-  <developers>
-    <developer>
-      <name>Fredrik Jönsson</name>
-      <email>fjo@kth.se</email>
-      <organization>KTH</organization>
-      <organizationUrl>http://www.kth.se/profile/fjo</organizationUrl>
-    </developer>
-  </developers>
-
-  <!-- The actual Sonatype distribution repository -->
   <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
     <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <id>dev-azure-com-kth-integration-integration</id>
+      <url>https://pkgs.dev.azure.com/kth-integration/_packaging/integration/maven/v1</url>
     </repository>
   </distributionManagement>
+
+  <repositories>
+    <repository>
+      <id>dev-azure-com-kth-integration-integration</id>
+      <url>https://pkgs.dev.azure.com/kth-integration/_packaging/integration/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencyManagement>
     <dependencies>
@@ -95,6 +74,7 @@
     </dependencies>
   </dependencyManagement>
 
+
   <modules>
     <module>alma-rest</module>
     <module>alma-component</module>
@@ -103,21 +83,6 @@
 
   <build>
     <plugins>
-      <!-- Signing required by Sonatype -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.5</version>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -163,4 +128,34 @@
       </plugin>
     </plugins>
   </build>
+
+    <!-- License information required by Sonatype -->
+    <licenses>
+      <license>
+        <name>The MIT License (MIT)</name>
+        <url>https://opensource.org/licenses/MIT</url>
+      </license>
+    </licenses>
+
+    <!-- Source control management required by Sonatype -->
+    <scm>
+      <url>https://github.com/kth/camel-alma</url>
+      <developerConnection>fjo@kth.se</developerConnection>
+      <connection>https://github.com/kth/camel-alma</connection>
+    </scm>
+    <issueManagement>
+      <system>GitHub</system>
+      <url>https://github.com/kth/camel-alma/issues</url>
+    </issueManagement>
+
+    <!-- Developer connection information required by Sonatype -->
+    <developers>
+      <developer>
+        <name>Fredrik Jönsson</name>
+        <email>fjo@kth.se</email>
+        <organization>KTH</organization>
+        <organizationUrl>http://www.kth.se/profile/fjo</organizationUrl>
+      </developer>
+    </developers>
+
 </project>
