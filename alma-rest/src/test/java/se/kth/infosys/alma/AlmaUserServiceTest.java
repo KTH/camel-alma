@@ -24,6 +24,7 @@
 package se.kth.infosys.alma;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
@@ -44,7 +45,7 @@ import se.kth.infosys.smx.alma.model.WebServiceResult;
 public class AlmaUserServiceTest {
     private static final Logger logger = Logger.getLogger(AlmaUserServiceTest.class);
     private AlmaUserService alma;
-    private Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
     private final static User TEST_USER;
     static {
@@ -94,10 +95,10 @@ public class AlmaUserServiceTest {
         try {
             user = alma.getUser(TEST_USER.getPrimaryId());
 
-            user.setFirstName("Magnus");    
+            user.setFirstName("Magnus");
             user = alma.updateUser(user);
             assertEquals("Magnus", user.getFirstName());
-    
+
             user.setFirstName(TEST_USER.getFirstName());
             user = alma.updateUser(user);
             assertEquals(TEST_USER.getFirstName(), user.getFirstName());
@@ -107,11 +108,11 @@ public class AlmaUserServiceTest {
             assert(false);
         }
 
-        assertEquals(true, alma.deleteUser(TEST_USER.getPrimaryId()));
+        assertTrue(alma.deleteUser(TEST_USER.getPrimaryId()));
     }
 
     /**
-     * This is rather depending on our specific environment. 
+     * This is rather depending on our specific environment.
      * Configure your data in test.properties.
      */
     @Test
@@ -119,13 +120,13 @@ public class AlmaUserServiceTest {
         try {
             User user = alma.getUser(properties.getProperty("test.data.user.other_id"));
             assertEquals(
-                    properties.getProperty("test.data.user.primary_id"), 
+                    properties.getProperty("test.data.user.primary_id"),
                     user.getPrimaryId());
             assertEquals(
-                    properties.getProperty("test.data.user.first_name"), 
+                    properties.getProperty("test.data.user.first_name"),
                     user.getFirstName());
             assertEquals(
-                    properties.getProperty("test.data.user.last_name"), 
+                    properties.getProperty("test.data.user.last_name"),
                     user.getLastName());
         } catch (BadRequestException e) {
             WebServiceResult res = e.getResponse().readEntity(WebServiceResult.class);

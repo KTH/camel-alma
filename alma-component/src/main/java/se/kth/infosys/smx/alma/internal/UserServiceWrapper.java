@@ -23,26 +23,23 @@
  */
 package se.kth.infosys.smx.alma.internal;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-
-import javax.ws.rs.BadRequestException;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
-import org.apache.camel.util.ExchangeHelper;
+import org.apache.camel.support.ExchangeHelper;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import se.kth.infosys.alma.AlmaUserService;
 import se.kth.infosys.smx.alma.model.User;
 import se.kth.infosys.smx.alma.model.UserIdentifier;
 import se.kth.infosys.smx.alma.model.UserIdentifiers;
 import se.kth.infosys.smx.alma.model.WebServiceResult;
+
+import javax.ws.rs.BadRequestException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashSet;
 
 /**
  * Wrapper class translating exchanges to AlmaUserService requests.
@@ -50,7 +47,7 @@ import se.kth.infosys.smx.alma.model.WebServiceResult;
 public class UserServiceWrapper {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final AlmaUserService userService;
-    private final HashSet<String> NO_UPDATE_PROPERTIES = new HashSet<String>(Arrays.asList(new String[]{"externalId"}));
+    private final HashSet<String> NO_UPDATE_PROPERTIES = new HashSet<>(Collections.singletonList("externalId"));
 
     /**
      * Constructor
@@ -164,15 +161,15 @@ public class UserServiceWrapper {
 
     private User getUserByUser(User user) {
         UserIdentifiers identifiers = user.getUserIdentifiers();
-        Iterator<UserIdentifier> iterator = identifiers.getUserIdentifier().iterator();
-        while (iterator.hasNext()) {
-            UserIdentifier identifier = (UserIdentifier) iterator.next();
+        for (UserIdentifier identifier : identifiers.getUserIdentifier()) {
             try {
                 log.debug("Finding user by identifer: {}: {}",
                         identifier.getIdType().getValue(),
                         identifier.getValue());
                 return userService.getUser(identifier.getValue());
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                log.debug("Failed to get User {}. Caught exception {}.", user, e);
+            }
         }
         return userService.getUser(user.getPrimaryId());
     }

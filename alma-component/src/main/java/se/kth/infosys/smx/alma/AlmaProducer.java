@@ -24,9 +24,9 @@
 package se.kth.infosys.smx.alma;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.impl.DefaultProducer;
-import org.apache.camel.util.ExchangeHelper;
 
+import org.apache.camel.support.DefaultProducer;
+import org.apache.camel.support.ExchangeHelper;
 import se.kth.infosys.smx.alma.internal.AlmaMessage;
 import se.kth.infosys.smx.alma.internal.UserServiceWrapper;
 

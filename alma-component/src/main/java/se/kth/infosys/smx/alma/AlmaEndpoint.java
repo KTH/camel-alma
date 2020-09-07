@@ -28,21 +28,21 @@ import org.apache.camel.Processor;
 import org.apache.camel.Producer;
 import org.apache.camel.api.management.ManagedAttribute;
 import org.apache.camel.api.management.ManagedResource;
-import org.apache.camel.impl.DefaultEndpoint;
 import org.apache.camel.spi.Metadata;
 import org.apache.camel.spi.UriEndpoint;
 import org.apache.camel.spi.UriPath;
+import org.apache.camel.support.DefaultEndpoint;
 
 /**
  * Represents a Alma Component endpoint.
  */
 @ManagedResource
-@UriEndpoint(scheme = "alma", title = "Alma Component", syntax="alma://apikey@environment[/api][/operation]", consumerClass = AlmaConsumer.class, label = "Alma Component")
+@UriEndpoint(scheme = "alma", title = "Alma Component", syntax="alma://apikey@environment[/api][/operation]")
 public class AlmaEndpoint extends DefaultEndpoint {
-    @UriPath(label="producer", description = "ExLibris Alma target environment") @Metadata(required = "true")
+    @UriPath(label="producer", description = "ExLibris Alma target environment") @Metadata(required = true)
     private String environment;
 
-    @UriPath(label="producer", description = "API key to use with target environment") @Metadata(required = "true")
+    @UriPath(label="producer", description = "API key to use with target environment") @Metadata(required = true)
     private String apiKey;
 
     @UriPath(label="producer", description = "Target API to use (only /users supported)")
@@ -65,7 +65,7 @@ public class AlmaEndpoint extends DefaultEndpoint {
     /**
      * {@inheritDoc}
      */
-    public Consumer createConsumer(Processor processor) throws Exception {
+    public Consumer createConsumer(Processor processor) {
         return new AlmaConsumer(this, processor);
     }
 
@@ -135,7 +135,7 @@ public class AlmaEndpoint extends DefaultEndpoint {
     @ManagedAttribute(description = "API operation to use with this ExLibris ALMA endpoint")
     public void setOperation(String operation) {
         this.operation = operation;
-        
+
     }
 
     /**

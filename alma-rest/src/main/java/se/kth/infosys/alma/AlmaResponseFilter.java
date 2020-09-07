@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
@@ -29,7 +30,7 @@ public class AlmaResponseFilter implements ClientResponseFilter {
                 result.write(buffer, 0, length);
             }
             stream.close();
-            LOG.trace("Response body: {}", result.toString("UTF-8"));
+            LOG.trace("Response body: {}", result.toString(StandardCharsets.UTF_8));
 
             responseContext.setEntityStream(new ByteArrayInputStream(result.toByteArray()));
         }

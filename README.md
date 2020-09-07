@@ -44,9 +44,3 @@ Use with maven:
       <version>1.3.1</version>
     </dependency>
 ```
-
-### alma-feature Karaf feature
-
-A Karaf feature definition to manage deploys of the above modules in an OSGi
-environment such as Apache ServiceMix/RedHat Fuse. We are currently not using
-this, but it is included for completeness.

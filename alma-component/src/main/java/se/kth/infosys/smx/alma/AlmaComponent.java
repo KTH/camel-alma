@@ -29,13 +29,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.camel.Endpoint;
-import org.apache.camel.impl.DefaultComponent;
+import org.apache.camel.support.DefaultComponent;
 
 /**
  * Represents the component that manages {@link AlmaEndpoint}.
  */
 public class AlmaComponent extends DefaultComponent {
-    private static Pattern PATH_PATTERN = Pattern.compile("(/(?<api>users))+(/(?<operation>create|read|update|delete|createOrUpdate))+");
+    private static final Pattern PATH_PATTERN = Pattern.compile("(/(?<api>users))+(/(?<operation>create|read|update|delete|createOrUpdate))+");
 
     /**
      * {@inheritDoc}
