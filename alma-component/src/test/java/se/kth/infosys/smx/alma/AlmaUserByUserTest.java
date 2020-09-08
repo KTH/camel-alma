@@ -30,10 +30,10 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.properties.PropertiesComponent;
 import org.apache.camel.model.dataformat.JaxbDataFormat;
+
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Before;
 import org.junit.Test;
-
 import se.kth.infosys.smx.alma.internal.AlmaMessage;
 import se.kth.infosys.smx.alma.model.User;
 
@@ -75,7 +75,7 @@ public class AlmaUserByUserTest extends CamelTestSupport {
     protected RouteBuilder createRouteBuilder() {
         return new RouteBuilder() {
             public void configure() {
-                PropertiesComponent pc = (PropertiesComponent) context.getComponent("properties");
+                PropertiesComponent pc = (PropertiesComponent) context.getPropertiesComponent();
                 pc.setLocation("classpath:test.properties");
 
                 JaxbDataFormat jaxb = new JaxbDataFormat(false);
@@ -83,7 +83,7 @@ public class AlmaUserByUserTest extends CamelTestSupport {
 
                 from("timer:once?repeatCount=1")
                   .setHeader("almaUserId")
-                  .simple("fjo@kth.se")
+                  .simple("gotesson@kth.se")
                   .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/read")
                   .to("log:test1")
                   .to("mock:result")

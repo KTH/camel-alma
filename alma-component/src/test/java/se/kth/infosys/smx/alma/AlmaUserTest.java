@@ -84,7 +84,7 @@ public class AlmaUserTest extends CamelTestSupport {
     protected RouteBuilder createRouteBuilder() {
         return new RouteBuilder() {
             public void configure() {
-                PropertiesComponent pc = (PropertiesComponent) context.getComponent("properties");
+                PropertiesComponent pc = (PropertiesComponent) context.getPropertiesComponent();
                 pc.setLocation("classpath:test.properties");
 
                 JaxbDataFormat jaxb = new JaxbDataFormat(false);
@@ -92,7 +92,7 @@ public class AlmaUserTest extends CamelTestSupport {
 
                 from("timer:once?repeatCount=1")
                   .setHeader("almaUserId")
-                  .simple("fjo@kth.se")
+                  .simple("gotesson@kth.se")
                   .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/read")
                   .to("log:test1")
                   .to("mock:result")
@@ -109,7 +109,7 @@ public class AlmaUserTest extends CamelTestSupport {
                   .marshal(jaxb)
                   .to("log:test3")
                   .setHeader("first_name")
-                  .simple("properties:test.data.user.first_name")
+                  .simple("{{test.data.user.first_name}}")
                   .to("xslt:replace-firstname.xslt")
                   .unmarshal(jaxb)
                   .to("alma://apikey:{{alma.apikey}}@{{alma.host}}/users/createOrUpdate")
