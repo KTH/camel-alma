@@ -38,19 +38,20 @@ public class AlmaUserService extends AlmaService {
     public static final String FAILED_TO_DELETE_USER = "401850";
     public static final String USER_NOT_FOUND = "401861";
     public static final String USER_WITH_ID_TYPE_NOT_FOUND = "401890";
+    public static final String UTF_8 = "utf-8";
 
     /**
      * Initialize the Web Service target.
      * @param host The targeted ExLibris environment.
      * @param apiKey The ExLibris ALMA API key.
-     * @throws Exception on SSL errors 
+     * @throws Exception on SSL errors
      */
     public AlmaUserService(String host, String apiKey) throws Exception {
         super(String.format("https://%s/almaws/v1/users", host), apiKey);
     }
 
     /**
-     * Get a User from ALMA with specified ID. 
+     * Get a User from ALMA with specified ID.
      * @param userId the user identifier
      * @return The user as found in Alma
      */
@@ -59,7 +60,7 @@ public class AlmaUserService extends AlmaService {
                 .resolveTemplate("user_id", userId)
                 .queryParam("apikey", apiKey)
                 .request()
-                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset(UTF_8))
                 .get(User.class);
     }
 
@@ -67,7 +68,7 @@ public class AlmaUserService extends AlmaService {
      * Get all users from ALMA. Use with care if many users. Since
      * requests are batched in counts of 100, you may consume your
      * ExLibris API call quota faster than expected.
-     * 
+     *
      * @return A list of all users found in Alma.
      */
     public Users getUsers() {
@@ -83,7 +84,7 @@ public class AlmaUserService extends AlmaService {
                 .queryParam("limit", LIMIT)
                 .queryParam("offset", offset)
                 .request()
-                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset(UTF_8))
                 .get(Users.class);
             users.getUser().addAll(nextUsers.getUser());
             offset += LIMIT;
@@ -102,8 +103,8 @@ public class AlmaUserService extends AlmaService {
                 .resolveTemplate("user_id", user.getPrimaryId())
                 .queryParam("apikey", apiKey)
                 .request()
-                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
-                .put(Entity.entity(user, MediaType.APPLICATION_XML_TYPE.withCharset("utf-8")), User.class);
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset(UTF_8))
+                .put(Entity.entity(user, MediaType.APPLICATION_XML_TYPE.withCharset(UTF_8)), User.class);
     }
 
     /**
@@ -117,12 +118,12 @@ public class AlmaUserService extends AlmaService {
                 .resolveTemplate("user_id", userId)
                 .queryParam("apikey", apiKey)
                 .request()
-                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
-                .put(Entity.entity(user, MediaType.APPLICATION_XML_TYPE.withCharset("utf-8")), User.class);
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset(UTF_8))
+                .put(Entity.entity(user, MediaType.APPLICATION_XML_TYPE.withCharset(UTF_8)), User.class);
     }
 
     /**
-     * Create a User from ALMA. 
+     * Create a User from ALMA.
      * @param user the ALMA user object
      * @return the user as created in ALMA.
      */
@@ -130,12 +131,12 @@ public class AlmaUserService extends AlmaService {
         return alma.path("")
                 .queryParam("apikey", apiKey)
                 .request()
-                .accept(MediaType.APPLICATION_XML_TYPE.withCharset("utf-8"))
-                .post(Entity.entity(user, MediaType.APPLICATION_XML_TYPE.withCharset("utf-8")), User.class);
+                .accept(MediaType.APPLICATION_XML_TYPE.withCharset(UTF_8))
+                .post(Entity.entity(user, MediaType.APPLICATION_XML_TYPE.withCharset(UTF_8)), User.class);
     }
 
     /**
-     * Remove a User from ALMA. 
+     * Remove a User from ALMA.
      * @param userId the user identifier
      * @return true if User is deleted, false if not, even if not found.
      */
